@@ -4,102 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
-    android:paddingTop="15sp"
-    android:paddingBottom="15sp"
-    tools:context="com.goloveschenko.weather.activity.WeatherActivity">
+    tools:context="activity.WeatherActivity">
 
-    <TextView
-        android:id="@+id/location"
+    <FrameLayout
+        android:id="@+id/weather_detail_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:textColor="@android:color/white"
-        android:text="@string/location"/>
-
-    <TextView
-        android:id="@+id/update_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_below="@+id/location"
-        android:layout_centerHorizontal="true"
-        android:textColor="@android:color/white"
-        android:text="@string/update_time"/>
-
-    <TextView
-        android:id="@+id/weather_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="90sp"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:textColor="@android:color/white"
-        android:text="@string/icon"/>
-
-    <TextView
-        android:id="@+id/details"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_below="@+id/weather_icon"
-        android:layout_centerHorizontal="true"
-        android:textColor="@android:color/white"
-        android:text="@string/details"/>
-
-    <TextView
-        android:id="@+id/humidity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_below="@+id/details"
-        android:layout_centerHorizontal="true"
-        android:textColor="@android:color/white"
-        android:text="@string/humidity"/>
-
-    <TextView
-        android:id="@+id/pressure"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_below="@+id/humidity"
-        android:layout_centerHorizontal="true"
-        android:textColor="@android:color/white"
-        android:text="@string/pressure"/>
-
-    <TextView
-        android:id="@+id/temperature"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="normal"
-        android:layout_below="@id/pressure"
-        android:layout_centerHorizontal="true"
-        android:textColor="@android:color/white"
-        android:text="@string/temperature"/>
-
-    <View
-        android:id="@+id/devider_top"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="5sp"
-        android:layout_below="@id/temperature"
-        android:background="@android:color/white"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/forecastday"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:overScrollMode="never"
-        android:layout_below="@id/devider_top"
-        android:layout_above="@id/devider_bottom"/>
-
-    <View
-        android:id="@+id/devider_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_alignParentBottom="true"
-        android:background="@android:color/white"/>
+        android:indeterminateTint="@android:color/white"
+        android:visibility="gone"/>
 </RelativeLayout>
