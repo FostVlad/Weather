@@ -1,4 +1,4 @@
-package com.goloveschenko.weather.data;
+package com.goloveschenko.weather.data.remote;
 
 import com.goloveschenko.weather.BuildConfig;
 

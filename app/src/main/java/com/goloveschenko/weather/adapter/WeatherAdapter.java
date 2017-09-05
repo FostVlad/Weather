@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.goloveschenko.weather.R;
-import com.goloveschenko.weather.entity.Forecastday;
+import com.goloveschenko.weather.data.model.Forecastday;
 import com.goloveschenko.weather.utils.WeatherUtils;
 
 import java.util.List;

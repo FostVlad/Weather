@@ -15,8 +15,8 @@ import android.widget.TextView;
 import com.goloveschenko.weather.BuildConfig;
 import com.goloveschenko.weather.R;
 import com.goloveschenko.weather.adapter.WeatherAdapter;
-import com.goloveschenko.weather.entity.Forecastday;
-import com.goloveschenko.weather.entity.WeatherResult;
+import com.goloveschenko.weather.data.model.Forecastday;
+import com.goloveschenko.weather.data.model.WeatherResult;
 import com.goloveschenko.weather.utils.WeatherUtils;
 
 import java.util.ArrayList;

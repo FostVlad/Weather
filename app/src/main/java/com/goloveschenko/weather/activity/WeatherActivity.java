@@ -7,9 +7,9 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.goloveschenko.weather.R;
-import com.goloveschenko.weather.data.WeatherClient;
-import com.goloveschenko.weather.data.WeatherService;
-import com.goloveschenko.weather.entity.WeatherResult;
+import com.goloveschenko.weather.data.remote.WeatherClient;
+import com.goloveschenko.weather.data.remote.WeatherService;
+import com.goloveschenko.weather.data.model.WeatherResult;
 import com.goloveschenko.weather.fragment.WeatherDetailFragment;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;

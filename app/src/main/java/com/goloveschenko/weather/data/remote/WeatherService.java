@@ -1,6 +1,6 @@
-package com.goloveschenko.weather.data;
+package com.goloveschenko.weather.data.remote;
 
-import com.goloveschenko.weather.entity.WeatherResult;
+import com.goloveschenko.weather.data.model.WeatherResult;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
