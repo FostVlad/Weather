@@ -7,23 +7,23 @@ import org.greenrobot.greendao.annotation.Generated;
 @Entity
 public class OrmWeather {
     @Id
-    private Long id;
+    private String id;
     private String location;
     private String date;
-    private String icon;
+    private int iconCode;
     private String details;
     private int humidity;
     private double pressure;
     private int temp;
     private boolean isDay;
-    @Generated(hash = 590068913)
-    public OrmWeather(Long id, String location, String date, String icon,
+    @Generated(hash = 6490740)
+    public OrmWeather(String id, String location, String date, int iconCode,
             String details, int humidity, double pressure, int temp,
             boolean isDay) {
         this.id = id;
         this.location = location;
         this.date = date;
-        this.icon = icon;
+        this.iconCode = iconCode;
         this.details = details;
         this.humidity = humidity;
         this.pressure = pressure;
@@ -33,10 +33,10 @@ public class OrmWeather {
     @Generated(hash = 109503595)
     public OrmWeather() {
     }
-    public Long getId() {
+    public String getId() {
         return this.id;
     }
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
     public String getLocation() {
@@ -51,11 +51,11 @@ public class OrmWeather {
     public void setDate(String date) {
         this.date = date;
     }
-    public String getIcon() {
-        return this.icon;
+    public int getIconCode() {
+        return this.iconCode;
     }
-    public void setIcon(String icon) {
-        this.icon = icon;
+    public void setIconCode(int iconCode) {
+        this.iconCode = iconCode;
     }
     public String getDetails() {
         return this.details;

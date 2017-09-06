@@ -13,7 +13,7 @@ import org.greenrobot.greendao.database.DatabaseStatement;
 /** 
  * DAO for table "ORM_WEATHER".
 */
-public class OrmWeatherDao extends AbstractDao<OrmWeather, Long> {
+public class OrmWeatherDao extends AbstractDao<OrmWeather, String> {
 
     public static final String TABLENAME = "ORM_WEATHER";
 
@@ -22,10 +22,10 @@ public class OrmWeatherDao extends AbstractDao<OrmWeather, Long> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property Id = new Property(0, Long.class, "id", true, "_id");
+        public final static Property Id = new Property(0, String.class, "id", true, "ID");
         public final static Property Location = new Property(1, String.class, "location", false, "LOCATION");
         public final static Property Date = new Property(2, String.class, "date", false, "DATE");
-        public final static Property Icon = new Property(3, String.class, "icon", false, "ICON");
+        public final static Property IconCode = new Property(3, int.class, "iconCode", false, "ICON_CODE");
         public final static Property Details = new Property(4, String.class, "details", false, "DETAILS");
         public final static Property Humidity = new Property(5, int.class, "humidity", false, "HUMIDITY");
         public final static Property Pressure = new Property(6, double.class, "pressure", false, "PRESSURE");
@@ -46,10 +46,10 @@ public class OrmWeatherDao extends AbstractDao<OrmWeather, Long> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"ORM_WEATHER\" (" + //
-                "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
+                "\"ID\" TEXT PRIMARY KEY NOT NULL ," + // 0: id
                 "\"LOCATION\" TEXT," + // 1: location
                 "\"DATE\" TEXT," + // 2: date
-                "\"ICON\" TEXT," + // 3: icon
+                "\"ICON_CODE\" INTEGER NOT NULL ," + // 3: iconCode
                 "\"DETAILS\" TEXT," + // 4: details
                 "\"HUMIDITY\" INTEGER NOT NULL ," + // 5: humidity
                 "\"PRESSURE\" REAL NOT NULL ," + // 6: pressure
@@ -67,9 +67,9 @@ public class OrmWeatherDao extends AbstractDao<OrmWeather, Long> {
     protected final void bindValues(DatabaseStatement stmt, OrmWeather entity) {
         stmt.clearBindings();
  
-        Long id = entity.getId();
+        String id = entity.getId();
         if (id != null) {
-            stmt.bindLong(1, id);
+            stmt.bindString(1, id);
         }
  
         String location = entity.getLocation();
@@ -81,11 +81,7 @@ public class OrmWeatherDao extends AbstractDao<OrmWeather, Long> {
         if (date != null) {
             stmt.bindString(3, date);
         }
- 
-        String icon = entity.getIcon();
-        if (icon != null) {
-            stmt.bindString(4, icon);
-        }
+        stmt.bindLong(4, entity.getIconCode());
  
         String details = entity.getDetails();
         if (details != null) {
@@ -101,9 +97,9 @@ public class OrmWeatherDao extends AbstractDao<OrmWeather, Long> {
     protected final void bindValues(SQLiteStatement stmt, OrmWeather entity) {
         stmt.clearBindings();
  
-        Long id = entity.getId();
+        String id = entity.getId();
         if (id != null) {
-            stmt.bindLong(1, id);
+            stmt.bindString(1, id);
         }
  
         String location = entity.getLocation();
@@ -115,11 +111,7 @@ public class OrmWeatherDao extends AbstractDao<OrmWeather, Long> {
         if (date != null) {
             stmt.bindString(3, date);
         }
- 
-        String icon = entity.getIcon();
-        if (icon != null) {
-            stmt.bindString(4, icon);
-        }
+        stmt.bindLong(4, entity.getIconCode());
  
         String details = entity.getDetails();
         if (details != null) {
@@ -132,17 +124,17 @@ public class OrmWeatherDao extends AbstractDao<OrmWeather, Long> {
     }
 
     @Override
-    public Long readKey(Cursor cursor, int offset) {
-        return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
+    public String readKey(Cursor cursor, int offset) {
+        return cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0);
     }    
 
     @Override
     public OrmWeather readEntity(Cursor cursor, int offset) {
         OrmWeather entity = new OrmWeather( //
-            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
+            cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // location
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // date
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // icon
+            cursor.getInt(offset + 3), // iconCode
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // details
             cursor.getInt(offset + 5), // humidity
             cursor.getDouble(offset + 6), // pressure
@@ -154,10 +146,10 @@ public class OrmWeatherDao extends AbstractDao<OrmWeather, Long> {
      
     @Override
     public void readEntity(Cursor cursor, OrmWeather entity, int offset) {
-        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
+        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
         entity.setLocation(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setDate(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setIcon(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setIconCode(cursor.getInt(offset + 3));
         entity.setDetails(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setHumidity(cursor.getInt(offset + 5));
         entity.setPressure(cursor.getDouble(offset + 6));
@@ -166,13 +158,12 @@ public class OrmWeatherDao extends AbstractDao<OrmWeather, Long> {
      }
     
     @Override
-    protected final Long updateKeyAfterInsert(OrmWeather entity, long rowId) {
-        entity.setId(rowId);
-        return rowId;
+    protected final String updateKeyAfterInsert(OrmWeather entity, long rowId) {
+        return entity.getId();
     }
     
     @Override
-    public Long getKey(OrmWeather entity) {
+    public String getKey(OrmWeather entity) {
         if(entity != null) {
             return entity.getId();
         } else {
