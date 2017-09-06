@@ -13,7 +13,7 @@ import org.greenrobot.greendao.database.DatabaseStatement;
 /** 
  * DAO for table "ORM_WEATHER".
 */
-public class OrmWeatherDao extends AbstractDao<OrmWeather, String> {
+public class OrmWeatherDao extends AbstractDao<OrmWeather, Long> {
 
     public static final String TABLENAME = "ORM_WEATHER";
 
@@ -22,15 +22,16 @@ public class OrmWeatherDao extends AbstractDao<OrmWeather, String> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property Id = new Property(0, String.class, "id", true, "ID");
-        public final static Property Location = new Property(1, String.class, "location", false, "LOCATION");
-        public final static Property Date = new Property(2, String.class, "date", false, "DATE");
-        public final static Property IconCode = new Property(3, int.class, "iconCode", false, "ICON_CODE");
-        public final static Property Details = new Property(4, String.class, "details", false, "DETAILS");
-        public final static Property Humidity = new Property(5, int.class, "humidity", false, "HUMIDITY");
-        public final static Property Pressure = new Property(6, double.class, "pressure", false, "PRESSURE");
-        public final static Property Temp = new Property(7, int.class, "temp", false, "TEMP");
-        public final static Property IsDay = new Property(8, boolean.class, "isDay", false, "IS_DAY");
+        public final static Property Id = new Property(0, Long.class, "id", true, "_id");
+        public final static Property CityId = new Property(1, String.class, "cityId", false, "CITY_ID");
+        public final static Property Location = new Property(2, String.class, "location", false, "LOCATION");
+        public final static Property Date = new Property(3, String.class, "date", false, "DATE");
+        public final static Property IconCode = new Property(4, int.class, "iconCode", false, "ICON_CODE");
+        public final static Property Details = new Property(5, String.class, "details", false, "DETAILS");
+        public final static Property Humidity = new Property(6, int.class, "humidity", false, "HUMIDITY");
+        public final static Property Pressure = new Property(7, double.class, "pressure", false, "PRESSURE");
+        public final static Property Temp = new Property(8, int.class, "temp", false, "TEMP");
+        public final static Property IsDay = new Property(9, boolean.class, "isDay", false, "IS_DAY");
     }
 
 
@@ -46,15 +47,16 @@ public class OrmWeatherDao extends AbstractDao<OrmWeather, String> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"ORM_WEATHER\" (" + //
-                "\"ID\" TEXT PRIMARY KEY NOT NULL ," + // 0: id
-                "\"LOCATION\" TEXT," + // 1: location
-                "\"DATE\" TEXT," + // 2: date
-                "\"ICON_CODE\" INTEGER NOT NULL ," + // 3: iconCode
-                "\"DETAILS\" TEXT," + // 4: details
-                "\"HUMIDITY\" INTEGER NOT NULL ," + // 5: humidity
-                "\"PRESSURE\" REAL NOT NULL ," + // 6: pressure
-                "\"TEMP\" INTEGER NOT NULL ," + // 7: temp
-                "\"IS_DAY\" INTEGER NOT NULL );"); // 8: isDay
+                "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
+                "\"CITY_ID\" TEXT," + // 1: cityId
+                "\"LOCATION\" TEXT," + // 2: location
+                "\"DATE\" TEXT," + // 3: date
+                "\"ICON_CODE\" INTEGER NOT NULL ," + // 4: iconCode
+                "\"DETAILS\" TEXT," + // 5: details
+                "\"HUMIDITY\" INTEGER NOT NULL ," + // 6: humidity
+                "\"PRESSURE\" REAL NOT NULL ," + // 7: pressure
+                "\"TEMP\" INTEGER NOT NULL ," + // 8: temp
+                "\"IS_DAY\" INTEGER NOT NULL );"); // 9: isDay
     }
 
     /** Drops the underlying database table. */
@@ -67,103 +69,116 @@ public class OrmWeatherDao extends AbstractDao<OrmWeather, String> {
     protected final void bindValues(DatabaseStatement stmt, OrmWeather entity) {
         stmt.clearBindings();
  
-        String id = entity.getId();
+        Long id = entity.getId();
         if (id != null) {
-            stmt.bindString(1, id);
+            stmt.bindLong(1, id);
+        }
+ 
+        String cityId = entity.getCityId();
+        if (cityId != null) {
+            stmt.bindString(2, cityId);
         }
  
         String location = entity.getLocation();
         if (location != null) {
-            stmt.bindString(2, location);
+            stmt.bindString(3, location);
         }
  
         String date = entity.getDate();
         if (date != null) {
-            stmt.bindString(3, date);
+            stmt.bindString(4, date);
         }
-        stmt.bindLong(4, entity.getIconCode());
+        stmt.bindLong(5, entity.getIconCode());
  
         String details = entity.getDetails();
         if (details != null) {
-            stmt.bindString(5, details);
+            stmt.bindString(6, details);
         }
-        stmt.bindLong(6, entity.getHumidity());
-        stmt.bindDouble(7, entity.getPressure());
-        stmt.bindLong(8, entity.getTemp());
-        stmt.bindLong(9, entity.getIsDay() ? 1L: 0L);
+        stmt.bindLong(7, entity.getHumidity());
+        stmt.bindDouble(8, entity.getPressure());
+        stmt.bindLong(9, entity.getTemp());
+        stmt.bindLong(10, entity.getIsDay() ? 1L: 0L);
     }
 
     @Override
     protected final void bindValues(SQLiteStatement stmt, OrmWeather entity) {
         stmt.clearBindings();
  
-        String id = entity.getId();
+        Long id = entity.getId();
         if (id != null) {
-            stmt.bindString(1, id);
+            stmt.bindLong(1, id);
+        }
+ 
+        String cityId = entity.getCityId();
+        if (cityId != null) {
+            stmt.bindString(2, cityId);
         }
  
         String location = entity.getLocation();
         if (location != null) {
-            stmt.bindString(2, location);
+            stmt.bindString(3, location);
         }
  
         String date = entity.getDate();
         if (date != null) {
-            stmt.bindString(3, date);
+            stmt.bindString(4, date);
         }
-        stmt.bindLong(4, entity.getIconCode());
+        stmt.bindLong(5, entity.getIconCode());
  
         String details = entity.getDetails();
         if (details != null) {
-            stmt.bindString(5, details);
+            stmt.bindString(6, details);
         }
-        stmt.bindLong(6, entity.getHumidity());
-        stmt.bindDouble(7, entity.getPressure());
-        stmt.bindLong(8, entity.getTemp());
-        stmt.bindLong(9, entity.getIsDay() ? 1L: 0L);
+        stmt.bindLong(7, entity.getHumidity());
+        stmt.bindDouble(8, entity.getPressure());
+        stmt.bindLong(9, entity.getTemp());
+        stmt.bindLong(10, entity.getIsDay() ? 1L: 0L);
     }
 
     @Override
-    public String readKey(Cursor cursor, int offset) {
-        return cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0);
+    public Long readKey(Cursor cursor, int offset) {
+        return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
     }    
 
     @Override
     public OrmWeather readEntity(Cursor cursor, int offset) {
         OrmWeather entity = new OrmWeather( //
-            cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // location
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // date
-            cursor.getInt(offset + 3), // iconCode
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // details
-            cursor.getInt(offset + 5), // humidity
-            cursor.getDouble(offset + 6), // pressure
-            cursor.getInt(offset + 7), // temp
-            cursor.getShort(offset + 8) != 0 // isDay
+            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // cityId
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // location
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // date
+            cursor.getInt(offset + 4), // iconCode
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // details
+            cursor.getInt(offset + 6), // humidity
+            cursor.getDouble(offset + 7), // pressure
+            cursor.getInt(offset + 8), // temp
+            cursor.getShort(offset + 9) != 0 // isDay
         );
         return entity;
     }
      
     @Override
     public void readEntity(Cursor cursor, OrmWeather entity, int offset) {
-        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
-        entity.setLocation(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setDate(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setIconCode(cursor.getInt(offset + 3));
-        entity.setDetails(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setHumidity(cursor.getInt(offset + 5));
-        entity.setPressure(cursor.getDouble(offset + 6));
-        entity.setTemp(cursor.getInt(offset + 7));
-        entity.setIsDay(cursor.getShort(offset + 8) != 0);
+        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
+        entity.setCityId(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setLocation(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setDate(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setIconCode(cursor.getInt(offset + 4));
+        entity.setDetails(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setHumidity(cursor.getInt(offset + 6));
+        entity.setPressure(cursor.getDouble(offset + 7));
+        entity.setTemp(cursor.getInt(offset + 8));
+        entity.setIsDay(cursor.getShort(offset + 9) != 0);
      }
     
     @Override
-    protected final String updateKeyAfterInsert(OrmWeather entity, long rowId) {
-        return entity.getId();
+    protected final Long updateKeyAfterInsert(OrmWeather entity, long rowId) {
+        entity.setId(rowId);
+        return rowId;
     }
     
     @Override
-    public String getKey(OrmWeather entity) {
+    public Long getKey(OrmWeather entity) {
         if(entity != null) {
             return entity.getId();
         } else {

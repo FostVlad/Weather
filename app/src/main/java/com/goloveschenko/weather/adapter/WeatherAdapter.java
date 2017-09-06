@@ -9,7 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.goloveschenko.weather.R;
-import com.goloveschenko.weather.data.model.Forecastday;
+import com.goloveschenko.weather.dao.OrmWeather;
+import com.goloveschenko.weather.data.model.ForecastDay;
 import com.goloveschenko.weather.utils.WeatherUtils;
 
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.List;
 public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHolder> {
     private final Typeface typeface;
 
-    private List<Forecastday> forecastdayList;
+    private List<OrmWeather> forecastDayList;
 
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView day;
@@ -32,8 +33,8 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
         }
     }
 
-    public WeatherAdapter(List<Forecastday> forecastdayList, Typeface typeface) {
-        this.forecastdayList = forecastdayList;
+    public WeatherAdapter(List<OrmWeather> forecastDayList, Typeface typeface) {
+        this.forecastDayList = forecastDayList;
         this.typeface = typeface;
     }
 
@@ -45,18 +46,18 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(WeatherAdapter.ViewHolder holder, int position) {
-        Forecastday forecastday = forecastdayList.get(position);
-        String dayOfWeek = WeatherUtils.getDayOfWeek(forecastday.getDate());
+        OrmWeather forecastDay = forecastDayList.get(position);
+        String dayOfWeek = WeatherUtils.getDayOfWeek(forecastDay.getDate());
         holder.day.setText(dayOfWeek);
-        Spanned iconCode = WeatherUtils.getWeatherIcon(forecastday.getDay().getCondition().getCode(), true);
+        Spanned iconCode = WeatherUtils.getWeatherIcon(forecastDay.getIconCode(), forecastDay.getIsDay());
         holder.icon.setText(iconCode);
         holder.icon.setTypeface(typeface);
-        String temp = WeatherUtils.getTemperature(forecastday.getDay().getAvgTempC());
+        String temp = forecastDay.getTemp() + "°";
         holder.temperature.setText(temp);
     }
 
     @Override
     public int getItemCount() {
-        return forecastdayList.size();
+        return forecastDayList.size();
     }
 }

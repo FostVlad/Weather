@@ -2,18 +2,7 @@ package com.goloveschenko.weather.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
-public class WeatherResult {
-    public class Forecast {
-        @SerializedName("forecastday")
-        private List<Forecastday> forecastday = null;
-
-        public List<Forecastday> getForecastday() {
-            return forecastday;
-        }
-    }
-
+public class ForecastWeather {
     @SerializedName("location")
     private Location location;
     @SerializedName("current")

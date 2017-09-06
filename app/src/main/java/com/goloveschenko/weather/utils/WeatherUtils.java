@@ -130,8 +130,4 @@ public class WeatherUtils {
         }
         return new SimpleDateFormat("E", Locale.US).format(curDate) + ".";
     }
-
-    public static String getTemperature(double temperature) {
-        return String.valueOf((int) temperature) + "\u00b0";
-    }
 }

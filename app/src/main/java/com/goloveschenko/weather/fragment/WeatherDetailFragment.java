@@ -12,19 +12,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.goloveschenko.WeatherApp;
 import com.goloveschenko.weather.BuildConfig;
 import com.goloveschenko.weather.R;
 import com.goloveschenko.weather.adapter.WeatherAdapter;
-import com.goloveschenko.weather.data.model.Forecastday;
-import com.goloveschenko.weather.data.model.WeatherResult;
+import com.goloveschenko.weather.dao.OrmWeather;
+import com.goloveschenko.weather.data.local.ILocalDataSource;
 import com.goloveschenko.weather.utils.WeatherUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class WeatherDetailFragment extends Fragment {
-    private static final int DAY_PARAMETER = 1;
+    public static final String ARG_ITEM_ID = "item_id";
 
     private TextView location;
     private TextView updateTime;
@@ -35,14 +35,17 @@ public class WeatherDetailFragment extends Fragment {
     private TextView temperature;
     private RecyclerView recyclerViewForecast;
 
-    private List<Forecastday> forecastdayList;
-    private WeatherResult weather;
+    private List<OrmWeather> forecastDayList;
 
     public WeatherDetailFragment() {
     }
 
-    public void setWeather(WeatherResult weather) {
-        this.weather = weather;
+    public static WeatherDetailFragment getInstance(String cityId) {
+        Bundle args = new Bundle();
+        args.putString(ARG_ITEM_ID, cityId);
+        WeatherDetailFragment weatherDetailFragment = new WeatherDetailFragment();
+        weatherDetailFragment.setArguments(args);
+        return weatherDetailFragment;
     }
 
     @Nullable
@@ -65,8 +68,8 @@ public class WeatherDetailFragment extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerViewForecast.setLayoutManager(layoutManager);
 
-        forecastdayList = new ArrayList<>();
-        WeatherAdapter adapter = new WeatherAdapter(forecastdayList, weatherFont);
+        forecastDayList = new ArrayList<>();
+        WeatherAdapter adapter = new WeatherAdapter(forecastDayList, weatherFont);
         recyclerViewForecast.setAdapter(adapter);
 
         makeView();
@@ -75,28 +78,23 @@ public class WeatherDetailFragment extends Fragment {
     }
 
    private void makeView() {
-        //===LOCATION===
-        String locationText = weather.getLocation().getName().toUpperCase(Locale.US) + ", " + weather.getLocation().getCountry().toUpperCase(Locale.US);
-        location.setText(locationText);
-        //===DATE===
-        String date = WeatherUtils.convertDate(weather.getLocation().getLocaltime());
-        updateTime.setText(date);
-        //===WEATHER ICON===
-        Spanned iconCode = WeatherUtils.getWeatherIcon(weather.getCurrent().getCondition().getCode(), weather.getCurrent().getIsDay() == DAY_PARAMETER);
+        ILocalDataSource localDataSource = ((WeatherApp) getActivity().getApplication()).getLocalDataSource();
+        List<OrmWeather> weatherList = localDataSource.getForecast();
+
+        location.setText(weatherList.get(0).getLocation());
+        updateTime.setText(weatherList.get(0).getDate());
+        Spanned iconCode = WeatherUtils.getWeatherIcon(weatherList.get(0).getIconCode(), weatherList.get(0).getIsDay());
         weatherIcon.setText(iconCode);
-        //===DETAILS===
-        details.setText(weather.getCurrent().getCondition().getText());
-        //===HUMIDITY===
-        String humidityText = "Humidity: " + weather.getCurrent().getHumidity() + "%";
+        details.setText(weatherList.get(0).getDetails());
+        String humidityText = "Humidity: " + weatherList.get(0).getHumidity() + "%";
         humidity.setText(humidityText);
-        //===PRESSURE===
-        String pressureText = "Pressure: " + weather.getCurrent().getPressure() + " hPa";
+        String pressureText = "Pressure: " + weatherList.get(0).getPressure() + " hPa";
         pressure.setText(pressureText);
-        //===TEMPERATURE===
-        temperature.setText(WeatherUtils.getTemperature(weather.getCurrent().getTemp()));
+        String temp = weatherList.get(0).getTemp() + "°";
+        temperature.setText(temp);
 
         //===FORECAST===
-        forecastdayList.addAll(weather.getForecast().getForecastday());
+        forecastDayList.addAll(weatherList.subList(1, weatherList.size()));
         recyclerViewForecast.getAdapter().notifyDataSetChanged();
     }
 }
