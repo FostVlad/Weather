@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimaryDark"
+    android:layout_weight="1">
+
+    <TextView
+        android:id="@+id/week_adapter_day"
+        android:layout_width="0dp"
+        android:layout_weight="0.5"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/white"
+        android:text="@string/day"/>
+
+    <TextView
+        android:id="@+id/week_adapter_icon"
+        android:layout_width="0dp"
+        android:layout_weight="0.2"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/white"
+        android:text="@string/icon"/>
+
+    <TextView
+        android:id="@+id/week_adapter_temp_max"
+        android:layout_width="0dp"
+        android:layout_weight="0.15"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/white"
+        android:text="@string/temperature"/>
+
+    <TextView
+        android:id="@+id/week_adapter_temp_min"
+        android:layout_width="0dp"
+        android:layout_weight="0.15"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/white"
+        android:text="@string/temperature"/>
+
+</LinearLayout>

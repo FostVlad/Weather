@@ -128,6 +128,17 @@ public class WeatherUtils {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return new SimpleDateFormat("E", Locale.US).format(curDate) + ".";
+        return new SimpleDateFormat("EEEE", Locale.US).format(curDate);
+    }
+
+    public static String getHour(String date) {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
+        Date curDate = null;
+        try {
+            curDate = df.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return new SimpleDateFormat("H", Locale.US).format(curDate);
     }
 }

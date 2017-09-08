@@ -1,104 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
-    android:paddingTop="15sp"
-    android:paddingBottom="15sp">
+    android:paddingBottom="15sp"
+    android:paddingTop="15sp">
 
     <TextView
         android:id="@+id/location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/location"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:textColor="@android:color/white"
-        android:text="@string/location"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteY="30dp" />
 
     <TextView
         android:id="@+id/update_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/update_time"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_below="@+id/location"
-        android:layout_centerHorizontal="true"
-        android:textColor="@android:color/white"
-        android:text="@string/update_time"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/location"
+        android:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/weather_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/icon"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="90sp"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
         android:textColor="@android:color/white"
-        android:text="@string/icon"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/update_time"
+        android:textSize="90sp" />
 
     <TextView
         android:id="@+id/details"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/details"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_below="@+id/weather_icon"
-        android:layout_centerHorizontal="true"
-        android:textColor="@android:color/white"
-        android:text="@string/details"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/weather_icon"
+        android:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/humidity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/humidity"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_below="@+id/details"
-        android:layout_centerHorizontal="true"
-        android:textColor="@android:color/white"
-        android:text="@string/humidity"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/details"
+        android:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/pressure"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/pressure"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_below="@+id/humidity"
-        android:layout_centerHorizontal="true"
-        android:textColor="@android:color/white"
-        android:text="@string/pressure"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/humidity"
+        android:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/temperature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/temperature"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="normal"
-        android:layout_below="@id/pressure"
-        android:layout_centerHorizontal="true"
         android:textColor="@android:color/white"
-        android:text="@string/temperature"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pressure"
+        android:textStyle="normal" />
 
     <View
-        android:id="@+id/devider_top"
+        android:id="@+id/divider_top"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="5sp"
         android:layout_below="@id/temperature"
-        android:background="@android:color/white"/>
+        android:layout_marginTop="5sp"
+        app:layout_constraintTop_toBottomOf="@id/temperature"
+        android:background="@android:color/white" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/forecastday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:overScrollMode="never"
-        android:layout_below="@id/devider_top"
-        android:layout_above="@id/devider_bottom"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider_top" />
 
     <View
-        android:id="@+id/devider_bottom"
+        android:id="@+id/divider_bottom"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_alignParentBottom="true"
-        android:background="@android:color/white"/>
+        app:layout_constraintTop_toBottomOf="@id/forecastday"
+        android:background="@android:color/white" />
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

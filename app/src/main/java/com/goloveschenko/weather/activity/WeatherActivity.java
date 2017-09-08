@@ -8,20 +8,21 @@ import android.widget.Toast;
 
 import com.goloveschenko.WeatherApp;
 import com.goloveschenko.weather.R;
-import com.goloveschenko.weather.dao.DaoSession;
 import com.goloveschenko.weather.dao.OrmWeather;
-import com.goloveschenko.weather.dao.OrmWeatherDao;
 import com.goloveschenko.weather.data.local.ILocalDataSource;
-import com.goloveschenko.weather.data.local.LocalDataSource;
-import com.goloveschenko.weather.data.model.Forecast;
 import com.goloveschenko.weather.data.model.ForecastDay;
+import com.goloveschenko.weather.data.model.Hour;
 import com.goloveschenko.weather.data.remote.WeatherClient;
 import com.goloveschenko.weather.data.remote.WeatherService;
 import com.goloveschenko.weather.data.model.ForecastWeather;
 import com.goloveschenko.weather.fragment.WeatherDetailFragment;
 import com.goloveschenko.weather.utils.WeatherUtils;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -73,9 +74,10 @@ public class WeatherActivity extends BaseActivity {
 
     private void updateWeatherView(ForecastWeather forecastWeather) {
         ILocalDataSource localDataSource = ((WeatherApp) getApplication()).getLocalDataSource();
-        OrmWeather ormWeather = getCurrentOrmWeather(forecastWeather);
-        List<OrmWeather> weatherList = getCurrentForecast(forecastWeather);
+        OrmWeather ormWeather = getCurrentWeather(forecastWeather);
+        List<OrmWeather> weatherList = getCurrentHourForecast(forecastWeather);
         weatherList.add(0, ormWeather);
+//        weatherList.addAll(getDaysForecast(forecastWeather));
         localDataSource.refreshForecast(weatherList);
 
         WeatherDetailFragment fragment = WeatherDetailFragment.getInstance(forecastWeather.getLocation().getTzId());
@@ -86,7 +88,7 @@ public class WeatherActivity extends BaseActivity {
         setContentVisible(true);
     }
 
-    private OrmWeather getCurrentOrmWeather(ForecastWeather forecastWeather) {
+    private OrmWeather getCurrentWeather(ForecastWeather forecastWeather) {
         OrmWeather ormWeather = new OrmWeather();
         ormWeather.setCityId(forecastWeather.getLocation().getTzId());
         ormWeather.setLocation(forecastWeather.getLocation().getName().toUpperCase(Locale.US) + ", " + forecastWeather.getLocation().getCountry().toUpperCase(Locale.US));
@@ -97,10 +99,47 @@ public class WeatherActivity extends BaseActivity {
         ormWeather.setHumidity(forecastWeather.getCurrent().getHumidity());
         ormWeather.setPressure(forecastWeather.getCurrent().getPressure());
         ormWeather.setTemp((int) forecastWeather.getCurrent().getTemp());
+        ormWeather.setTempMin((int) forecastWeather.getForecast().getForecastDay().get(0).getDay().getMinTempC());
+        ormWeather.setTempMax((int) forecastWeather.getForecast().getForecastDay().get(0).getDay().getMaxTempC());
+        ormWeather.setType(OrmWeather.WeatherType.CURRENT);
         return ormWeather;
     }
 
-    private List<OrmWeather> getCurrentForecast(ForecastWeather forecastWeather) {
+    private List<OrmWeather> getCurrentHourForecast(ForecastWeather forecastWeather) {
+        List<OrmWeather> weatherList = new ArrayList<>();
+        OrmWeather ormWeather;
+        try {
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
+            Calendar nextDay = Calendar.getInstance();
+            nextDay.add(Calendar.DATE, 1);
+            for (ForecastDay forecastDay : forecastWeather.getForecast().getForecastDay()) {
+                for (Hour hour : forecastDay.getHour()) {
+                    if (df.parse(hour.getTime()).after(Calendar.getInstance().getTime()) && df.parse(hour.getTime()).before(nextDay.getTime())) {
+                        ormWeather = new OrmWeather();
+                        ormWeather.setCityId(forecastWeather.getLocation().getTzId());
+                        ormWeather.setLocation("");
+                        ormWeather.setDate(hour.getTime());
+                        ormWeather.setIconCode(hour.getCondition().getCode());
+                        ormWeather.setIsDay(hour.getIsDay() == DAY_PARAMETER);
+                        ormWeather.setDetails("");
+                        ormWeather.setHumidity(hour.getHumidity());
+                        ormWeather.setPressure(hour.getPressureMb());
+                        ormWeather.setTemp((int) hour.getTempC());
+                        ormWeather.setTempMin(0);
+                        ormWeather.setTempMax(0);
+                        ormWeather.setType(OrmWeather.WeatherType.HOUR);
+
+                        weatherList.add(ormWeather);
+                    }
+                }
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return weatherList;
+    }
+
+    private List<OrmWeather> getDaysForecast(ForecastWeather forecastWeather) {
         List<OrmWeather> weatherList = new ArrayList<>();
         OrmWeather ormWeather;
         for (ForecastDay day : forecastWeather.getForecast().getForecastDay()) {
@@ -114,6 +153,9 @@ public class WeatherActivity extends BaseActivity {
             ormWeather.setHumidity(0);
             ormWeather.setPressure(0);
             ormWeather.setTemp((int) day.getDay().getAvgTempC());
+            ormWeather.setTempMin((int) day.getDay().getMinTempC());
+            ormWeather.setTempMax((int) day.getDay().getMaxTempC());
+            ormWeather.setType(OrmWeather.WeatherType.WEEK);
 
             weatherList.add(ormWeather);
         }

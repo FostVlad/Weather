@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.goloveschenko.WeatherApp;
 import com.goloveschenko.weather.BuildConfig;
 import com.goloveschenko.weather.R;
-import com.goloveschenko.weather.adapter.WeatherAdapter;
+import com.goloveschenko.weather.adapter.DayRecyclerViewAdapter;
 import com.goloveschenko.weather.dao.OrmWeather;
 import com.goloveschenko.weather.data.local.ILocalDataSource;
 import com.goloveschenko.weather.utils.WeatherUtils;
@@ -69,7 +69,7 @@ public class WeatherDetailFragment extends Fragment {
         recyclerViewForecast.setLayoutManager(layoutManager);
 
         forecastDayList = new ArrayList<>();
-        WeatherAdapter adapter = new WeatherAdapter(forecastDayList, weatherFont);
+        DayRecyclerViewAdapter adapter = new DayRecyclerViewAdapter(forecastDayList, weatherFont);
         recyclerViewForecast.setAdapter(adapter);
 
         makeView();
@@ -93,7 +93,7 @@ public class WeatherDetailFragment extends Fragment {
         String temp = weatherList.get(0).getTemp() + "°";
         temperature.setText(temp);
 
-        //===FORECAST===
+        //===WEEK===
         forecastDayList.addAll(weatherList.subList(1, weatherList.size()));
         recyclerViewForecast.getAdapter().notifyDataSetChanged();
     }
