@@ -5,6 +5,8 @@ import android.content.Context;
 import com.goloveschenko.weather.dao.DaoMaster;
 import com.goloveschenko.weather.dao.DaoSession;
 import com.goloveschenko.weather.dao.OrmWeather;
+import com.goloveschenko.weather.dao.OrmWeather.WeatherType;
+import com.goloveschenko.weather.dao.OrmWeather.WeatherTypeConverter;
 import com.goloveschenko.weather.dao.OrmWeatherDao;
 
 import org.greenrobot.greendao.database.Database;
@@ -30,9 +32,26 @@ public class LocalDataSource implements ILocalDataSource {
     }
 
     @Override
-    public List<OrmWeather> getForecast() {
+    public OrmWeather getCurrentForecast() {
         OrmWeatherDao weatherDao = daoSession.getOrmWeatherDao();
-        return weatherDao.loadAll();
+        WeatherTypeConverter converter = new WeatherTypeConverter();
+        List<OrmWeather> forecast = weatherDao.queryBuilder()
+                .where(OrmWeatherDao.Properties.Type.eq(converter.convertToDatabaseValue(WeatherType.CURRENT)))
+                .limit(1)
+                .build()
+                .list();
+        return forecast.size() != 0 ? forecast.get(0) : null;
+    }
+
+    @Override
+    public List<OrmWeather> getForecastByType(OrmWeather.WeatherType type) {
+        OrmWeatherDao weatherDao = daoSession.getOrmWeatherDao();
+        WeatherTypeConverter converter = new WeatherTypeConverter();
+        return weatherDao.queryBuilder()
+                .where(OrmWeatherDao.Properties.Type.eq(converter.convertToDatabaseValue(type)))
+                .orderAsc(OrmWeatherDao.Properties.Date)
+                .build()
+                .list();
     }
 
     @Override

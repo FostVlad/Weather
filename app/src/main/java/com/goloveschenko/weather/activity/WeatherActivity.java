@@ -15,7 +15,8 @@ import com.goloveschenko.weather.data.model.Hour;
 import com.goloveschenko.weather.data.remote.WeatherClient;
 import com.goloveschenko.weather.data.remote.WeatherService;
 import com.goloveschenko.weather.data.model.ForecastWeather;
-import com.goloveschenko.weather.fragment.WeatherDetailFragment;
+import com.goloveschenko.weather.fragment.CurrentForecastFragment;
+import com.goloveschenko.weather.fragment.WeekForecastFragment;
 import com.goloveschenko.weather.utils.WeatherUtils;
 
 import java.text.DateFormat;
@@ -48,11 +49,10 @@ public class WeatherActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
 
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
         setProgressBarVisible(true);
-        container = (FrameLayout) findViewById(R.id.weather_detail_container);
+        container = (FrameLayout) findViewById(R.id.current_forecast_container);
         setContentVisible(false);
 
         WeatherService weatherService = WeatherClient.getClient().create(WeatherService.class);
@@ -77,13 +77,21 @@ public class WeatherActivity extends BaseActivity {
         OrmWeather ormWeather = getCurrentWeather(forecastWeather);
         List<OrmWeather> weatherList = getCurrentHourForecast(forecastWeather);
         weatherList.add(0, ormWeather);
-//        weatherList.addAll(getDaysForecast(forecastWeather));
+        weatherList.addAll(getDaysForecast(forecastWeather));
+
         localDataSource.refreshForecast(weatherList);
 
-        WeatherDetailFragment fragment = WeatherDetailFragment.getInstance(forecastWeather.getLocation().getTzId());
+        //===CURRENT FORECAST===
+        CurrentForecastFragment currentForecastFragment = CurrentForecastFragment.getInstance(forecastWeather.getLocation().getTzId());
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.weather_detail_container, fragment)
+                .add(R.id.current_forecast_container, currentForecastFragment)
                 .commit();
+        //===WEEK FORECAST===
+        WeekForecastFragment weekForecastFragment = WeekForecastFragment.getInstance(forecastWeather.getLocation().getTzId());
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.week_forecast_container, weekForecastFragment)
+                .commit();
+
         setProgressBarVisible(false);
         setContentVisible(true);
     }
@@ -92,7 +100,7 @@ public class WeatherActivity extends BaseActivity {
         OrmWeather ormWeather = new OrmWeather();
         ormWeather.setCityId(forecastWeather.getLocation().getTzId());
         ormWeather.setLocation(forecastWeather.getLocation().getName().toUpperCase(Locale.US) + ", " + forecastWeather.getLocation().getCountry().toUpperCase(Locale.US));
-        ormWeather.setDate(WeatherUtils.convertDate(forecastWeather.getLocation().getLocaltime()));
+        ormWeather.setDate(WeatherUtils.getConvertTime(forecastWeather.getLocation().getLocaltime()));
         ormWeather.setIconCode(forecastWeather.getCurrent().getCondition().getCode());
         ormWeather.setIsDay(forecastWeather.getCurrent().getIsDay() == DAY_PARAMETER);
         ormWeather.setDetails(forecastWeather.getCurrent().getCondition().getText());

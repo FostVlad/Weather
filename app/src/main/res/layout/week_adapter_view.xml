@@ -8,7 +8,7 @@
     <TextView
         android:id="@+id/week_adapter_day"
         android:layout_width="0dp"
-        android:layout_weight="0.5"
+        android:layout_weight="0.45"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/white"
@@ -17,9 +17,9 @@
     <TextView
         android:id="@+id/week_adapter_icon"
         android:layout_width="0dp"
-        android:layout_weight="0.2"
+        android:layout_weight="0.35"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
+        android:textAlignment="textStart"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/white"
         android:text="@string/icon"/>
@@ -27,9 +27,9 @@
     <TextView
         android:id="@+id/week_adapter_temp_max"
         android:layout_width="0dp"
-        android:layout_weight="0.15"
+        android:layout_weight="0.1"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
+        android:textAlignment="textEnd"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/white"
         android:text="@string/temperature"/>
@@ -37,11 +37,11 @@
     <TextView
         android:id="@+id/week_adapter_temp_min"
         android:layout_width="0dp"
-        android:layout_weight="0.15"
+        android:layout_weight="0.1"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
+        android:textAlignment="textEnd"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/secondary_text_dark"
         android:text="@string/temperature"/>
 
 </LinearLayout>

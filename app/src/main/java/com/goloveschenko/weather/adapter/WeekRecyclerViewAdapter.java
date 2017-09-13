@@ -22,15 +22,15 @@ public class WeekRecyclerViewAdapter extends RecyclerView.Adapter<WeekRecyclerVi
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView day;
         TextView icon;
-        TextView tempMin;
         TextView tempMax;
+        TextView tempMin;
 
         ViewHolder(View itemView) {
             super(itemView);
             day = (TextView) itemView.findViewById(R.id.week_adapter_day);
             icon = (TextView) itemView.findViewById(R.id.week_adapter_icon);
-            tempMin = (TextView) itemView.findViewById(R.id.week_adapter_temp_min);
             tempMax = (TextView) itemView.findViewById(R.id.week_adapter_temp_max);
+            tempMin = (TextView) itemView.findViewById(R.id.week_adapter_temp_min);
         }
     }
 
@@ -48,15 +48,15 @@ public class WeekRecyclerViewAdapter extends RecyclerView.Adapter<WeekRecyclerVi
     @Override
     public void onBindViewHolder(WeekRecyclerViewAdapter.ViewHolder holder, int position) {
         OrmWeather forecastDay = weekList.get(position);
-        String dayOfWeek = WeatherUtils.getHour(forecastDay.getDate());
+        String dayOfWeek = WeatherUtils.getDayOfWeek(forecastDay.getDate());
         holder.day.setText(dayOfWeek);
         Spanned iconCode = WeatherUtils.getWeatherIcon(forecastDay.getIconCode(), forecastDay.getIsDay());
         holder.icon.setText(iconCode);
         holder.icon.setTypeface(typeface);
-        String tempMin = forecastDay.getTempMin() + "°";
-        holder.tempMin.setText(tempMin);
-        String tempMax = forecastDay.getTempMax() + "°";
+        String tempMax = String.valueOf(forecastDay.getTempMax());
         holder.tempMax.setText(tempMax);
+        String tempMin = String.valueOf(forecastDay.getTempMin());
+        holder.tempMin.setText(tempMin);
     }
 
     @Override

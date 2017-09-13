@@ -5,6 +5,7 @@ import com.goloveschenko.weather.dao.OrmWeather;
 import java.util.List;
 
 public interface ILocalDataSource {
-    List<OrmWeather> getForecast();
+    OrmWeather getCurrentForecast();
+    List<OrmWeather> getForecastByType(OrmWeather.WeatherType type);
     void refreshForecast(List<OrmWeather> forecast);
 }

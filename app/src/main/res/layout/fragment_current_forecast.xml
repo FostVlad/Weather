@@ -4,18 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
-    android:paddingBottom="15sp"
-    android:paddingTop="15sp">
+    android:background="@color/colorPrimaryDark">
 
     <TextView
         android:id="@+id/location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="@string/location"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@android:color/white"
@@ -104,12 +98,9 @@
         android:background="@android:color/white" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/forecastday"
+        android:id="@+id/forecast_day"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:overScrollMode="never"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -120,7 +111,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_alignParentBottom="true"
-        app:layout_constraintTop_toBottomOf="@id/forecastday"
+        app:layout_constraintTop_toBottomOf="@id/forecast_day"
         android:background="@android:color/white" />
 
 </android.support.constraint.ConstraintLayout>

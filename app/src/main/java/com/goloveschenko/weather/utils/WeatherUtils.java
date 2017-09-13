@@ -105,11 +105,7 @@ public class WeatherUtils {
         return Html.fromHtml(result);
     }
 
-    public static Spanned getDefaultIcon() {
-        return Html.fromHtml("&#xf07b;");
-    }
-
-    public static String convertDate(String date) {
+    public static String getConvertTime(String date) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
         Date curDate = null;
         try {

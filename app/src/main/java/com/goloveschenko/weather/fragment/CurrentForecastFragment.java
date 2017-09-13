@@ -23,7 +23,7 @@ import com.goloveschenko.weather.utils.WeatherUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WeatherDetailFragment extends Fragment {
+public class CurrentForecastFragment extends Fragment {
     public static final String ARG_ITEM_ID = "item_id";
 
     private TextView location;
@@ -33,25 +33,25 @@ public class WeatherDetailFragment extends Fragment {
     private TextView humidity;
     private TextView pressure;
     private TextView temperature;
-    private RecyclerView recyclerViewForecast;
 
-    private List<OrmWeather> forecastDayList;
+    private RecyclerView recyclerViewDay;
+    private List<OrmWeather> forecastDay;
 
-    public WeatherDetailFragment() {
+    public CurrentForecastFragment() {
     }
 
-    public static WeatherDetailFragment getInstance(String cityId) {
+    public static CurrentForecastFragment getInstance(String cityId) {
         Bundle args = new Bundle();
         args.putString(ARG_ITEM_ID, cityId);
-        WeatherDetailFragment weatherDetailFragment = new WeatherDetailFragment();
-        weatherDetailFragment.setArguments(args);
-        return weatherDetailFragment;
+        CurrentForecastFragment currentForecastFragment = new CurrentForecastFragment();
+        currentForecastFragment.setArguments(args);
+        return currentForecastFragment;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.weather_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_current_forecast, container, false);
 
         Typeface weatherFont = Typeface.createFromAsset(getActivity().getAssets(), BuildConfig.WEATHER_FONT_PATH);
         location = (TextView) view.findViewById(R.id.location);
@@ -63,14 +63,14 @@ public class WeatherDetailFragment extends Fragment {
         pressure = (TextView) view.findViewById(R.id.pressure);
         temperature = (TextView) view.findViewById(R.id.temperature);
 
-        recyclerViewForecast = (RecyclerView) view.findViewById(R.id.forecastday);
+        recyclerViewDay = (RecyclerView) view.findViewById(R.id.forecast_day);
         LinearLayoutManager layoutManager = new LinearLayoutManager(view.getContext());
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        recyclerViewForecast.setLayoutManager(layoutManager);
+        recyclerViewDay.setLayoutManager(layoutManager);
 
-        forecastDayList = new ArrayList<>();
-        DayRecyclerViewAdapter adapter = new DayRecyclerViewAdapter(forecastDayList, weatherFont);
-        recyclerViewForecast.setAdapter(adapter);
+        forecastDay = new ArrayList<>();
+        DayRecyclerViewAdapter adapter = new DayRecyclerViewAdapter(forecastDay, weatherFont);
+        recyclerViewDay.setAdapter(adapter);
 
         makeView();
 
@@ -79,22 +79,23 @@ public class WeatherDetailFragment extends Fragment {
 
    private void makeView() {
         ILocalDataSource localDataSource = ((WeatherApp) getActivity().getApplication()).getLocalDataSource();
-        List<OrmWeather> weatherList = localDataSource.getForecast();
 
-        location.setText(weatherList.get(0).getLocation());
-        updateTime.setText(weatherList.get(0).getDate());
-        Spanned iconCode = WeatherUtils.getWeatherIcon(weatherList.get(0).getIconCode(), weatherList.get(0).getIsDay());
+        OrmWeather current = localDataSource.getCurrentForecast();
+        location.setText(current.getLocation());
+        updateTime.setText(current.getDate());
+        Spanned iconCode = WeatherUtils.getWeatherIcon(current.getIconCode(), current.getIsDay());
         weatherIcon.setText(iconCode);
-        details.setText(weatherList.get(0).getDetails());
-        String humidityText = "Humidity: " + weatherList.get(0).getHumidity() + "%";
+        details.setText(current.getDetails());
+        String humidityText = "Humidity: " + current.getHumidity() + "%";
         humidity.setText(humidityText);
-        String pressureText = "Pressure: " + weatherList.get(0).getPressure() + " hPa";
+        String pressureText = "Pressure: " + current.getPressure() + " hPa";
         pressure.setText(pressureText);
-        String temp = weatherList.get(0).getTemp() + "°";
+        String temp = current.getTemp() + "°";
         temperature.setText(temp);
 
-        //===WEEK===
-        forecastDayList.addAll(weatherList.subList(1, weatherList.size()));
-        recyclerViewForecast.getAdapter().notifyDataSetChanged();
+        //===DAY===
+        List<OrmWeather> hourList = localDataSource.getForecastByType(OrmWeather.WeatherType.HOUR);
+        forecastDay.addAll(hourList);
+        recyclerViewDay.getAdapter().notifyDataSetChanged();
     }
 }

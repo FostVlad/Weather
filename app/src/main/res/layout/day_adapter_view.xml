@@ -12,7 +12,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/secondary_text_dark"
         android:text="@string/day"/>
 
     <TextView
