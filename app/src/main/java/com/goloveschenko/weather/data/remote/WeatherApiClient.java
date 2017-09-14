@@ -9,7 +9,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class WeatherClient {
+public class WeatherApiClient {
     private static final String QUERY_NAME_APPID = "key";
     private static final String QUERY_VALUE_APPID = "a456c65a89b44bf8ac6101713161207";
 

@@ -6,7 +6,7 @@ import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public interface WeatherService {
+public interface WeatherApiService {
     @GET("v1/current.json")
     Observable<ForecastWeather> getWeather(@Query("q") String city);
     @GET("v1/forecast.json")
