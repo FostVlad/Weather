@@ -1,6 +1,5 @@
 package com.goloveschenko.weather.fragment;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.goloveschenko.WeatherApp;
-import com.goloveschenko.weather.BuildConfig;
 import com.goloveschenko.weather.R;
 import com.goloveschenko.weather.adapter.WeekRecyclerViewAdapter;
 import com.goloveschenko.weather.dao.OrmWeather;
@@ -46,8 +44,7 @@ public class WeekForecastFragment extends Fragment {
         recyclerViewWeek.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         forecastWeek = new ArrayList<>();
-        Typeface weatherFont = Typeface.createFromAsset(getActivity().getAssets(), BuildConfig.WEATHER_FONT_PATH);
-        WeekRecyclerViewAdapter adapter = new WeekRecyclerViewAdapter(forecastWeek, weatherFont);
+        WeekRecyclerViewAdapter adapter = new WeekRecyclerViewAdapter(forecastWeek, getContext());
         recyclerViewWeek.setAdapter(adapter);
 
         makeView();

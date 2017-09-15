@@ -35,6 +35,6 @@
         android:layout_below="@id/day_adapter_icon"
         android:layout_centerHorizontal="true"
         android:textColor="@android:color/white"
-        android:text="@string/temperature"/>
+        android:text="@string/temp"/>
 
 </RelativeLayout>

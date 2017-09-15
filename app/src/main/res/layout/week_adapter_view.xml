@@ -32,7 +32,7 @@
         android:textAlignment="textEnd"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/white"
-        android:text="@string/temperature"/>
+        android:text="@string/temp"/>
 
     <TextView
         android:id="@+id/week_adapter_temp_min"
@@ -42,6 +42,6 @@
         android:textAlignment="textEnd"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/secondary_text_dark"
-        android:text="@string/temperature"/>
+        android:text="@string/temp"/>
 
 </LinearLayout>

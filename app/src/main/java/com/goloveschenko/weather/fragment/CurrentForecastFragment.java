@@ -1,5 +1,6 @@
 package com.goloveschenko.weather.fragment;
 
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -32,7 +33,7 @@ public class CurrentForecastFragment extends Fragment {
     private TextView details;
     private TextView humidity;
     private TextView pressure;
-    private TextView temperature;
+    private TextView temp;
 
     private RecyclerView recyclerViewDay;
     private List<OrmWeather> forecastDay;
@@ -61,7 +62,7 @@ public class CurrentForecastFragment extends Fragment {
         details = (TextView) view.findViewById(R.id.details);
         humidity = (TextView) view.findViewById(R.id.humidity);
         pressure = (TextView) view.findViewById(R.id.pressure);
-        temperature = (TextView) view.findViewById(R.id.temperature);
+        temp = (TextView) view.findViewById(R.id.temp);
 
         recyclerViewDay = (RecyclerView) view.findViewById(R.id.forecast_day);
         LinearLayoutManager layoutManager = new LinearLayoutManager(view.getContext());
@@ -69,7 +70,7 @@ public class CurrentForecastFragment extends Fragment {
         recyclerViewDay.setLayoutManager(layoutManager);
 
         forecastDay = new ArrayList<>();
-        DayRecyclerViewAdapter adapter = new DayRecyclerViewAdapter(forecastDay, weatherFont);
+        DayRecyclerViewAdapter adapter = new DayRecyclerViewAdapter(forecastDay, getContext());
         recyclerViewDay.setAdapter(adapter);
 
         makeView();
@@ -79,6 +80,7 @@ public class CurrentForecastFragment extends Fragment {
 
    private void makeView() {
         ILocalDataSource localDataSource = ((WeatherApp) getActivity().getApplication()).getLocalDataSource();
+        Resources res = getResources();
 
         OrmWeather current = localDataSource.getCurrentForecast();
         location.setText(current.getLocation());
@@ -86,12 +88,12 @@ public class CurrentForecastFragment extends Fragment {
         Spanned iconCode = WeatherUtils.getWeatherIcon(current.getIconCode(), current.getIsDay());
         weatherIcon.setText(iconCode);
         details.setText(current.getDetails());
-        String humidityText = "Humidity: " + current.getHumidity() + "%";
+        String humidityText = res.getString(R.string.humidity_title) + current.getHumidity() + res.getString(R.string.percent_title);
         humidity.setText(humidityText);
-        String pressureText = "Pressure: " + current.getPressure() + " hPa";
+        String pressureText = res.getString(R.string.pressure_title) + current.getPressure() + res.getString(R.string.pressure_value_title);
         pressure.setText(pressureText);
-        String temp = current.getTemp() + "°";
-        temperature.setText(temp);
+        String currentTemp = current.getTemp() + res.getString(R.string.temp_title);
+        temp.setText(currentTemp);
 
         //===DAY===
         List<OrmWeather> hourList = localDataSource.getForecastByType(OrmWeather.WeatherType.HOUR);
