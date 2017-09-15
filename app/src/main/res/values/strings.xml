@@ -10,9 +10,9 @@
     <string name="day">Day</string>
 
     <!--Titles-->
-    <string name="humidity_title">Humidity: </string>
-    <string name="pressure_title">Pressure: </string>
-    <string name="pressure_value_title">hPa</string>
+    <string name="humidity_title">Humidity:\u0020</string>
+    <string name="pressure_title">Pressure:\u0020</string>
+    <string name="pressure_value_title">\u0020hPa</string>
     <string name="percent_title">%</string>
     <string name="temp_title">°</string>
 </resources>

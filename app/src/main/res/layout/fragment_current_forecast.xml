@@ -41,7 +41,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/update_time"
-        android:textSize="90sp" />
+        android:textSize="90sp"
+        android:paddingTop="40dp"/>
 
     <TextView
         android:id="@+id/details"
