@@ -10,7 +10,7 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="420dp"
+        android:layout_height="320dp"
         android:visibility="invisible">
 
         <android.support.design.widget.CollapsingToolbarLayout
@@ -40,6 +40,21 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="28dp"
+        android:background="@color/colorPrimary"
+        android:theme="?attr/actionBarDivider"
+        android:layout_gravity="bottom">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:id="@+id/submitEditNote"
+            android:src="@android:drawable/ic_menu_mapmode"
+            android:layout_alignParentEnd="true"/>
+    </android.support.v7.widget.Toolbar>
 
     <ProgressBar
         android:id="@+id/progress_bar"
