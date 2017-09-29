@@ -44,8 +44,7 @@ public class WeatherService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         if (intent != null) {
             localDataSource = ((WeatherApp) getApplication()).getLocalDataSource();
-            WeatherApiService weatherClient = WeatherApiClient.getClient().create(WeatherApiService.class);
-            weatherClient.getWeatherByDays(CITY_NAME, DAYS_COUNT)
+            WeatherApiClient.getClient().getWeatherByDays(CITY_NAME, DAYS_COUNT)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
                     .subscribe(this::updateLocalWeather,

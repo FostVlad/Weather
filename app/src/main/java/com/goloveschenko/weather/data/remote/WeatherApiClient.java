@@ -13,10 +13,10 @@ public class WeatherApiClient {
     private static final String QUERY_NAME_APPID = "key";
     private static final String QUERY_VALUE_APPID = "a456c65a89b44bf8ac6101713161207";
 
-    private static Retrofit retrofit = null;
+    private static WeatherApiService service = null;
 
-    public static Retrofit getClient() {
-        if (retrofit == null) {
+    public static WeatherApiService getClient() {
+        if (service == null) {
             OkHttpClient client = new OkHttpClient.Builder().addInterceptor(chain -> {
                 Request request = chain.request();
                 HttpUrl url = request.url().newBuilder().addQueryParameter(QUERY_NAME_APPID, QUERY_VALUE_APPID).build();
@@ -24,14 +24,16 @@ public class WeatherApiClient {
                 return chain.proceed(request);
             }).build();
 
-            retrofit = new Retrofit.Builder()
+            Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(BuildConfig.BASE_URL)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(client)
                     .build();
+
+            return retrofit.create(WeatherApiService.class);
         }
-        return retrofit;
+        return service;
     }
 
 }
