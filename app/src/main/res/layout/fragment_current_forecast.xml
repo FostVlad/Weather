@@ -22,10 +22,10 @@
         tools:layout_editor_absoluteY="30dp" />
 
     <TextView
-        android:id="@+id/update_time"
+        android:id="@+id/details"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:text="@string/update_time"
+        android:text="@string/details"
         android:textAppearance="?android:attr/textAppearanceMedium"
         app:layout_constraintHeight_default="wrap"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,44 +43,19 @@
         app:layout_constraintHeight_default="wrap"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/update_time"
+        app:layout_constraintTop_toBottomOf="@id/location"
         android:textSize="90sp"
         android:paddingTop="40dp"/>
 
     <TextView
-        android:id="@+id/details"
+        android:id="@+id/update_time"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:text="@string/details"
+        android:text="@string/update_time"
         android:textAppearance="?android:attr/textAppearanceMedium"
         app:layout_constraintHeight_default="wrap"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/weather_icon"
-        android:textColor="@android:color/white" />
-
-    <TextView
-        android:id="@+id/humidity"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:text="@string/humidity"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        app:layout_constraintHeight_default="wrap"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/details"
-        android:textColor="@android:color/white" />
-
-    <TextView
-        android:id="@+id/pressure"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:text="@string/pressure"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        app:layout_constraintHeight_default="wrap"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/humidity"
         android:textColor="@android:color/white" />
 
     <TextView
@@ -88,12 +63,11 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:text="@string/temp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/white"
         app:layout_constraintHeight_default="wrap"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pressure"
+        app:layout_constraintTop_toBottomOf="@id/weather_icon"
         android:textStyle="normal" />
 
     <View

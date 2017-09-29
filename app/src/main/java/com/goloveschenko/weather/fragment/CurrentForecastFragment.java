@@ -31,8 +31,6 @@ public class CurrentForecastFragment extends Fragment {
     private TextView updateTime;
     private TextView weatherIcon;
     private TextView details;
-    private TextView humidity;
-    private TextView pressure;
     private TextView temp;
 
     private RecyclerView recyclerViewDay;
@@ -56,12 +54,10 @@ public class CurrentForecastFragment extends Fragment {
 
         Typeface weatherFont = Typeface.createFromAsset(getActivity().getAssets(), BuildConfig.WEATHER_FONT_PATH);
         location = (TextView) view.findViewById(R.id.location);
-        updateTime = (TextView) view.findViewById(R.id.update_time);
+        details = (TextView) view.findViewById(R.id.details);
         weatherIcon = (TextView) view.findViewById(R.id.weather_icon);
         weatherIcon.setTypeface(weatherFont);
-        details = (TextView) view.findViewById(R.id.details);
-        humidity = (TextView) view.findViewById(R.id.humidity);
-        pressure = (TextView) view.findViewById(R.id.pressure);
+        updateTime = (TextView) view.findViewById(R.id.update_time);
         temp = (TextView) view.findViewById(R.id.temp);
 
         recyclerViewDay = (RecyclerView) view.findViewById(R.id.forecast_day);
@@ -84,14 +80,10 @@ public class CurrentForecastFragment extends Fragment {
 
         OrmWeather current = localDataSource.getCurrentForecast();
         location.setText(current.getLocation());
-        updateTime.setText(current.getDate());
+        details.setText(current.getDetails());
         Spanned iconCode = WeatherUtils.getWeatherIcon(current.getIconCode(), current.getIsDay());
         weatherIcon.setText(iconCode);
-        details.setText(current.getDetails());
-        String humidityText = res.getString(R.string.humidity_title) + current.getHumidity() + res.getString(R.string.percent_title);
-        humidity.setText(humidityText);
-        String pressureText = res.getString(R.string.pressure_title) + current.getPressure() + res.getString(R.string.pressure_value_title);
-        pressure.setText(pressureText);
+        updateTime.setText(current.getDate());
         String currentTemp = current.getTemp() + res.getString(R.string.temp_title);
         temp.setText(currentTemp);
 
