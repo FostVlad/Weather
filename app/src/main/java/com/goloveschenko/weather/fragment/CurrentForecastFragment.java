@@ -57,7 +57,7 @@ public class CurrentForecastFragment extends Fragment {
         details = (TextView) view.findViewById(R.id.details);
         weatherIcon = (TextView) view.findViewById(R.id.weather_icon);
         weatherIcon.setTypeface(weatherFont);
-        updateTime = (TextView) view.findViewById(R.id.update_time);
+        updateTime = (TextView) view.findViewById(R.id.time);
         temp = (TextView) view.findViewById(R.id.temp);
 
         recyclerViewDay = (RecyclerView) view.findViewById(R.id.forecast_day);
