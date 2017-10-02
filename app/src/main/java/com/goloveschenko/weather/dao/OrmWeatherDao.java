@@ -1,13 +1,18 @@
 package com.goloveschenko.weather.dao;
 
+import java.util.List;
+import java.util.ArrayList;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteStatement;
 
 import org.greenrobot.greendao.AbstractDao;
 import org.greenrobot.greendao.Property;
+import org.greenrobot.greendao.internal.SqlUtils;
 import org.greenrobot.greendao.internal.DaoConfig;
 import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.database.DatabaseStatement;
+import org.greenrobot.greendao.query.Query;
+import org.greenrobot.greendao.query.QueryBuilder;
 
 import com.goloveschenko.weather.dao.OrmWeather.WeatherType;
 import com.goloveschenko.weather.dao.OrmWeather.WeatherTypeConverter;
@@ -26,7 +31,7 @@ public class OrmWeatherDao extends AbstractDao<OrmWeather, Long> {
      */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property CityId = new Property(1, String.class, "cityId", false, "CITY_ID");
+        public final static Property CityId = new Property(1, Long.class, "cityId", false, "CITY_ID");
         public final static Property Location = new Property(2, String.class, "location", false, "LOCATION");
         public final static Property Date = new Property(3, String.class, "date", false, "DATE");
         public final static Property IconCode = new Property(4, int.class, "iconCode", false, "ICON_CODE");
@@ -40,7 +45,10 @@ public class OrmWeatherDao extends AbstractDao<OrmWeather, Long> {
         public final static Property Type = new Property(12, Integer.class, "type", false, "TYPE");
     }
 
+    private DaoSession daoSession;
+
     private final WeatherTypeConverter typeConverter = new WeatherTypeConverter();
+    private Query<OrmWeather> ormCity_WeatherListQuery;
 
     public OrmWeatherDao(DaoConfig config) {
         super(config);
@@ -48,6 +56,7 @@ public class OrmWeatherDao extends AbstractDao<OrmWeather, Long> {
     
     public OrmWeatherDao(DaoConfig config, DaoSession daoSession) {
         super(config, daoSession);
+        this.daoSession = daoSession;
     }
 
     /** Creates the underlying database table. */
@@ -55,7 +64,7 @@ public class OrmWeatherDao extends AbstractDao<OrmWeather, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"ORM_WEATHER\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
-                "\"CITY_ID\" TEXT," + // 1: cityId
+                "\"CITY_ID\" INTEGER," + // 1: cityId
                 "\"LOCATION\" TEXT," + // 2: location
                 "\"DATE\" TEXT," + // 3: date
                 "\"ICON_CODE\" INTEGER NOT NULL ," + // 4: iconCode
@@ -84,9 +93,9 @@ public class OrmWeatherDao extends AbstractDao<OrmWeather, Long> {
             stmt.bindLong(1, id);
         }
  
-        String cityId = entity.getCityId();
+        Long cityId = entity.getCityId();
         if (cityId != null) {
-            stmt.bindString(2, cityId);
+            stmt.bindLong(2, cityId);
         }
  
         String location = entity.getLocation();
@@ -126,9 +135,9 @@ public class OrmWeatherDao extends AbstractDao<OrmWeather, Long> {
             stmt.bindLong(1, id);
         }
  
-        String cityId = entity.getCityId();
+        Long cityId = entity.getCityId();
         if (cityId != null) {
-            stmt.bindString(2, cityId);
+            stmt.bindLong(2, cityId);
         }
  
         String location = entity.getLocation();
@@ -160,6 +169,12 @@ public class OrmWeatherDao extends AbstractDao<OrmWeather, Long> {
     }
 
     @Override
+    protected final void attachEntity(OrmWeather entity) {
+        super.attachEntity(entity);
+        entity.__setDaoSession(daoSession);
+    }
+
+    @Override
     public Long readKey(Cursor cursor, int offset) {
         return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
     }    
@@ -168,7 +183,7 @@ public class OrmWeatherDao extends AbstractDao<OrmWeather, Long> {
     public OrmWeather readEntity(Cursor cursor, int offset) {
         OrmWeather entity = new OrmWeather( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // cityId
+            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // cityId
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // location
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // date
             cursor.getInt(offset + 4), // iconCode
@@ -187,7 +202,7 @@ public class OrmWeatherDao extends AbstractDao<OrmWeather, Long> {
     @Override
     public void readEntity(Cursor cursor, OrmWeather entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setCityId(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setCityId(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
         entity.setLocation(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setDate(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setIconCode(cursor.getInt(offset + 4));
@@ -226,4 +241,109 @@ public class OrmWeatherDao extends AbstractDao<OrmWeather, Long> {
         return true;
     }
     
+    /** Internal query to resolve the "weatherList" to-many relationship of OrmCity. */
+    public List<OrmWeather> _queryOrmCity_WeatherList(Long cityId) {
+        synchronized (this) {
+            if (ormCity_WeatherListQuery == null) {
+                QueryBuilder<OrmWeather> queryBuilder = queryBuilder();
+                queryBuilder.where(Properties.CityId.eq(null));
+                ormCity_WeatherListQuery = queryBuilder.build();
+            }
+        }
+        Query<OrmWeather> query = ormCity_WeatherListQuery.forCurrentThread();
+        query.setParameter(0, cityId);
+        return query.list();
+    }
+
+    private String selectDeep;
+
+    protected String getSelectDeep() {
+        if (selectDeep == null) {
+            StringBuilder builder = new StringBuilder("SELECT ");
+            SqlUtils.appendColumns(builder, "T", getAllColumns());
+            builder.append(',');
+            SqlUtils.appendColumns(builder, "T0", daoSession.getOrmCityDao().getAllColumns());
+            builder.append(" FROM ORM_WEATHER T");
+            builder.append(" LEFT JOIN ORM_CITY T0 ON T.\"CITY_ID\"=T0.\"_id\"");
+            builder.append(' ');
+            selectDeep = builder.toString();
+        }
+        return selectDeep;
+    }
+    
+    protected OrmWeather loadCurrentDeep(Cursor cursor, boolean lock) {
+        OrmWeather entity = loadCurrent(cursor, 0, lock);
+        int offset = getAllColumns().length;
+
+        OrmCity city = loadCurrentOther(daoSession.getOrmCityDao(), cursor, offset);
+        entity.setCity(city);
+
+        return entity;    
+    }
+
+    public OrmWeather loadDeep(Long key) {
+        assertSinglePk();
+        if (key == null) {
+            return null;
+        }
+
+        StringBuilder builder = new StringBuilder(getSelectDeep());
+        builder.append("WHERE ");
+        SqlUtils.appendColumnsEqValue(builder, "T", getPkColumns());
+        String sql = builder.toString();
+        
+        String[] keyArray = new String[] { key.toString() };
+        Cursor cursor = db.rawQuery(sql, keyArray);
+        
+        try {
+            boolean available = cursor.moveToFirst();
+            if (!available) {
+                return null;
+            } else if (!cursor.isLast()) {
+                throw new IllegalStateException("Expected unique result, but count was " + cursor.getCount());
+            }
+            return loadCurrentDeep(cursor, true);
+        } finally {
+            cursor.close();
+        }
+    }
+    
+    /** Reads all available rows from the given cursor and returns a list of new ImageTO objects. */
+    public List<OrmWeather> loadAllDeepFromCursor(Cursor cursor) {
+        int count = cursor.getCount();
+        List<OrmWeather> list = new ArrayList<OrmWeather>(count);
+        
+        if (cursor.moveToFirst()) {
+            if (identityScope != null) {
+                identityScope.lock();
+                identityScope.reserveRoom(count);
+            }
+            try {
+                do {
+                    list.add(loadCurrentDeep(cursor, false));
+                } while (cursor.moveToNext());
+            } finally {
+                if (identityScope != null) {
+                    identityScope.unlock();
+                }
+            }
+        }
+        return list;
+    }
+    
+    protected List<OrmWeather> loadDeepAllAndCloseCursor(Cursor cursor) {
+        try {
+            return loadAllDeepFromCursor(cursor);
+        } finally {
+            cursor.close();
+        }
+    }
+    
+
+    /** A raw-style query where you can pass any WHERE clause and arguments. */
+    public List<OrmWeather> queryDeep(String where, String... selectionArg) {
+        Cursor cursor = db.rawQuery(getSelectDeep() + where, selectionArg);
+        return loadDeepAllAndCloseCursor(cursor);
+    }
+ 
 }
