@@ -31,7 +31,7 @@ public class WeatherApiClient {
                     .client(client)
                     .build();
 
-            return retrofit.create(WeatherApiService.class);
+            service = retrofit.create(WeatherApiService.class);
         }
         return service;
     }

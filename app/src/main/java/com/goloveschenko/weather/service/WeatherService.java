@@ -13,7 +13,6 @@ import com.goloveschenko.weather.data.model.ForecastDay;
 import com.goloveschenko.weather.data.model.ForecastWeather;
 import com.goloveschenko.weather.data.model.Hour;
 import com.goloveschenko.weather.data.remote.WeatherApiClient;
-import com.goloveschenko.weather.data.remote.WeatherApiService;
 import com.goloveschenko.weather.utils.WeatherUtils;
 
 import java.text.DateFormat;
@@ -66,7 +65,7 @@ public class WeatherService extends IntentService {
 
     private OrmWeather getCurrentWeather(ForecastWeather forecastWeather) {
         OrmWeather ormWeather = new OrmWeather();
-        ormWeather.setCityId(forecastWeather.getLocation().getTzId());
+        ormWeather.setCityId(/*forecastWeather.getLocation().getTzId()*/0L);
         ormWeather.setLocation(forecastWeather.getLocation().getName().toUpperCase(Locale.US) + ", " + forecastWeather.getLocation().getCountry().toUpperCase(Locale.US));
         ormWeather.setDate(WeatherUtils.getConvertTime(forecastWeather.getLocation().getLocaltime()));
         ormWeather.setIconCode(forecastWeather.getCurrent().getCondition().getCode());
@@ -92,7 +91,7 @@ public class WeatherService extends IntentService {
                 for (Hour hour : forecastDay.getHour()) {
                     if (df.parse(hour.getTime()).after(Calendar.getInstance().getTime()) && df.parse(hour.getTime()).before(nextDay.getTime())) {
                         ormWeather = new OrmWeather();
-                        ormWeather.setCityId(forecastWeather.getLocation().getTzId());
+                        ormWeather.setCityId(/*forecastWeather.getLocation().getTzId()*/0L);
                         ormWeather.setLocation("");
                         ormWeather.setDate(hour.getTime());
                         ormWeather.setIconCode(hour.getCondition().getCode());
@@ -120,7 +119,7 @@ public class WeatherService extends IntentService {
         OrmWeather ormWeather;
         for (ForecastDay day : forecastWeather.getForecast().getForecastDay()) {
             ormWeather = new OrmWeather();
-            ormWeather.setCityId(forecastWeather.getLocation().getTzId());
+            ormWeather.setCityId(/*forecastWeather.getLocation().getTzId()*/0L);
             ormWeather.setLocation("");
             ormWeather.setDate(day.getDate());
             ormWeather.setIconCode(day.getDay().getCondition().getCode());
