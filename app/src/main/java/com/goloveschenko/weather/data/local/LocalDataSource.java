@@ -32,11 +32,12 @@ public class LocalDataSource implements ILocalDataSource {
     }
 
     @Override
-    public OrmWeather getCurrentForecast() {
+    public OrmWeather getCurrentForecast(long cityId) {
         OrmWeatherDao weatherDao = daoSession.getOrmWeatherDao();
         WeatherTypeConverter converter = new WeatherTypeConverter();
         List<OrmWeather> forecast = weatherDao.queryBuilder()
-                .where(OrmWeatherDao.Properties.Type.eq(converter.convertToDatabaseValue(WeatherType.CURRENT)))
+                .where(OrmWeatherDao.Properties.CityId.eq(cityId),
+                       OrmWeatherDao.Properties.Type.eq(converter.convertToDatabaseValue(WeatherType.CURRENT)))
                 .limit(1)
                 .build()
                 .list();
@@ -44,20 +45,46 @@ public class LocalDataSource implements ILocalDataSource {
     }
 
     @Override
-    public List<OrmWeather> getForecastByType(OrmWeather.WeatherType type) {
+    public List<OrmWeather> getForecastByType(long cityId, OrmWeather.WeatherType type) {
         OrmWeatherDao weatherDao = daoSession.getOrmWeatherDao();
         WeatherTypeConverter converter = new WeatherTypeConverter();
         return weatherDao.queryBuilder()
-                .where(OrmWeatherDao.Properties.Type.eq(converter.convertToDatabaseValue(type)))
+                .where(OrmWeatherDao.Properties.CityId.eq(cityId),
+                       OrmWeatherDao.Properties.Type.eq(converter.convertToDatabaseValue(type)))
                 .orderAsc(OrmWeatherDao.Properties.Date)
                 .build()
                 .list();
     }
 
     @Override
-    public void refreshForecast(List<OrmWeather> forecast) {
+    public void refreshForecast(long cityId, List<OrmWeather> forecast) {
+        OrmWeatherDao weatherDao = daoSession.getOrmWeatherDao();
+        weatherDao.queryBuilder()
+                .where(OrmWeatherDao.Properties.CityId.eq(cityId))
+                .buildDelete()
+                .executeDeleteWithoutDetachingEntities();
+        weatherDao.insertInTx(forecast);
+    }
+
+    @Override
+    public void refreshAllForecast(List<OrmWeather> forecast) {
         OrmWeatherDao weatherDao = daoSession.getOrmWeatherDao();
         weatherDao.deleteAll();
         weatherDao.insertInTx(forecast);
+    }
+
+    @Override
+    public void deleteForecast(long cityId) {
+        OrmWeatherDao weatherDao = daoSession.getOrmWeatherDao();
+        weatherDao.queryBuilder()
+                .where(OrmWeatherDao.Properties.CityId.eq(cityId))
+                .buildDelete()
+                .executeDeleteWithoutDetachingEntities();
+    }
+
+    @Override
+    public void deleteAllForecast() {
+        OrmWeatherDao weatherDao = daoSession.getOrmWeatherDao();
+        weatherDao.deleteAll();
     }
 }
