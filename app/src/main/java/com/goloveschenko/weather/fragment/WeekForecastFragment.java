@@ -27,9 +27,9 @@ public class WeekForecastFragment extends Fragment {
     public WeekForecastFragment() {
     }
 
-    public static WeekForecastFragment getInstance(String cityId) {
+    public static WeekForecastFragment getInstance(long cityId) {
         Bundle args = new Bundle();
-        args.putString(ARG_ITEM_ID, cityId);
+        args.putLong(ARG_ITEM_ID, cityId);
         WeekForecastFragment weekForecastFragment = new WeekForecastFragment();
         weekForecastFragment.setArguments(args);
         return weekForecastFragment;
@@ -54,7 +54,7 @@ public class WeekForecastFragment extends Fragment {
 
     private void makeView() {
         ILocalDataSource localDataSource = ((WeatherApp) getActivity().getApplication()).getLocalDataSource();
-        List<OrmWeather> dayList = localDataSource.getForecastByType(OrmWeather.WeatherType.WEEK);
+        List<OrmWeather> dayList = localDataSource.getForecastByType(getArguments().getLong(ARG_ITEM_ID), OrmWeather.WeatherType.WEEK);
         forecastWeek.addAll(dayList);
         recyclerViewWeek.getAdapter().notifyDataSetChanged();
     }

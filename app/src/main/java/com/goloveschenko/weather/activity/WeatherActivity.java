@@ -49,12 +49,7 @@ public class WeatherActivity extends BaseActivity {
         startService(new Intent(this, WeatherService.class));
 
         ImageView cityButton = (ImageView) findViewById(R.id.add_city_button);
-        cityButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivityForResult(new Intent(WeatherActivity.this, CityActivity.class), 200);
-            }
-        });
+        cityButton.setOnClickListener(view -> startActivityForResult(new Intent(WeatherActivity.this, CityActivity.class), 200));
     }
 
 
@@ -62,12 +57,12 @@ public class WeatherActivity extends BaseActivity {
     private void updateWeatherView() {
         ILocalDataSource localDataSource = ((WeatherApp) getApplication()).getLocalDataSource();
         //===CURRENT FORECAST===
-        CurrentForecastFragment currentForecastFragment = CurrentForecastFragment.getInstance(/*localDataSource.getCurrentForecast().getCityId()*/"");
+        CurrentForecastFragment currentForecastFragment = CurrentForecastFragment.getInstance(/*localDataSource.getCurrentForecast().getCityId()*/0L);
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.current_forecast_container, currentForecastFragment)
                 .commit();
         //===WEEK FORECAST===
-        WeekForecastFragment weekForecastFragment = WeekForecastFragment.getInstance(/*localDataSource.getCurrentForecast().getCityId()*/"");
+        WeekForecastFragment weekForecastFragment = WeekForecastFragment.getInstance(/*localDataSource.getCurrentForecast().getCityId()*/0L);
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.week_forecast_container, weekForecastFragment)
                 .commit();

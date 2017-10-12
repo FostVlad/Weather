@@ -39,9 +39,9 @@ public class CurrentForecastFragment extends Fragment {
     public CurrentForecastFragment() {
     }
 
-    public static CurrentForecastFragment getInstance(String cityId) {
+    public static CurrentForecastFragment getInstance(long cityId) {
         Bundle args = new Bundle();
-        args.putString(ARG_ITEM_ID, cityId);
+        args.putLong(ARG_ITEM_ID, cityId);
         CurrentForecastFragment currentForecastFragment = new CurrentForecastFragment();
         currentForecastFragment.setArguments(args);
         return currentForecastFragment;
@@ -78,7 +78,7 @@ public class CurrentForecastFragment extends Fragment {
         ILocalDataSource localDataSource = ((WeatherApp) getActivity().getApplication()).getLocalDataSource();
         Resources res = getResources();
 
-        OrmWeather current = localDataSource.getCurrentForecast();
+        OrmWeather current = localDataSource.getCurrentForecast(getArguments().getLong(ARG_ITEM_ID));
         location.setText(current.getLocation());
         details.setText(current.getDetails());
         Spanned iconCode = WeatherUtils.getWeatherIcon(current.getIconCode(), current.getIsDay());
@@ -88,7 +88,7 @@ public class CurrentForecastFragment extends Fragment {
         temp.setText(currentTemp);
 
         //===DAY===
-        List<OrmWeather> hourList = localDataSource.getForecastByType(OrmWeather.WeatherType.HOUR);
+        List<OrmWeather> hourList = localDataSource.getForecastByType(getArguments().getLong(ARG_ITEM_ID), OrmWeather.WeatherType.HOUR);
         forecastDay.addAll(hourList);
         recyclerViewDay.getAdapter().notifyDataSetChanged();
     }

@@ -60,7 +60,7 @@ public class WeatherService extends IntentService {
         weatherList.add(0, ormWeather);
         weatherList.addAll(getWeekForecast(forecastWeather));
 
-        localDataSource.refreshForecast(weatherList);
+        localDataSource.refreshForecast(0L, weatherList);
     }
 
     private OrmWeather getCurrentWeather(ForecastWeather forecastWeather) {
