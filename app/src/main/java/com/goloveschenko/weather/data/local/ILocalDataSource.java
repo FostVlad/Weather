@@ -1,5 +1,6 @@
 package com.goloveschenko.weather.data.local;
 
+import com.goloveschenko.weather.dao.OrmCity;
 import com.goloveschenko.weather.dao.OrmWeather;
 
 import java.util.List;
@@ -11,4 +12,8 @@ public interface ILocalDataSource {
     void refreshAllForecast(List<OrmWeather> forecast);
     void deleteForecast(long cityId);
     void deleteAllForecast();
+
+    List<OrmCity> getCityList();
+    void addCity(OrmCity city);
+    void removeCity(OrmCity city);
 }

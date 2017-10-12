@@ -1,37 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorPrimaryDark">
 
-    <TextView
-        android:id="@+id/city_adapter_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/update_time"
-        android:textColor="@android:color/white"/>
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.55">
 
-    <TextView
-        android:id="@+id/city_adapter_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/location"
-        android:layout_below="@id/city_adapter_time"
-        android:textColor="@android:color/white"/>
+        <TextView
+            android:id="@+id/city_adapter_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/update_time"
+            android:textColor="@android:color/white"/>
+
+        <TextView
+            android:id="@+id/city_adapter_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/location"
+            android:layout_below="@id/city_adapter_time"
+            android:textColor="@android:color/white"/>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/city_adapter_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.25"
         android:text="@string/icon"
-        android:layout_alignStart="@id/city_adapter_temp"
+        android:textSize="25sp"
+        android:textAlignment="center"
         android:textColor="@android:color/white"/>
 
     <TextView
         android:id="@+id/city_adapter_temp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.2"
         android:text="@string/temp"
-        android:layout_alignParentEnd="true"
+        android:textSize="25sp"
+        android:textAlignment="textEnd"
         android:textColor="@android:color/white"/>
-</RelativeLayout>
+</LinearLayout>

@@ -3,6 +3,7 @@ package com.goloveschenko.weather.adapter;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 import com.goloveschenko.weather.BuildConfig;
 import com.goloveschenko.weather.R;
 import com.goloveschenko.weather.dao.OrmCity;
+import com.goloveschenko.weather.dao.OrmWeather;
+import com.goloveschenko.weather.utils.WeatherUtils;
 
 import java.util.List;
 
@@ -50,7 +53,14 @@ public class CityRecyclerViewAdapter extends RecyclerView.Adapter<CityRecyclerVi
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         OrmCity city = cityList.get(position);
-
+        OrmWeather currentWeather = city.getWeatherList().get(0);
+        holder.time.setText(currentWeather.getDate());
+        holder.location.setText(city.getLocation());
+        Spanned iconCode = WeatherUtils.getWeatherIcon(currentWeather.getIconCode(), currentWeather.getIsDay());
+        holder.icon.setText(iconCode);
+        holder.icon.setTypeface(typeface);
+        String temp = String.valueOf(currentWeather.getTemp());
+        holder.temp.setText(temp);
     }
 
     @Override
