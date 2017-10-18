@@ -18,8 +18,8 @@ import com.goloveschenko.weather.utils.WeatherUtils;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
@@ -81,7 +81,7 @@ public class WeatherService extends IntentService {
     }
 
     private List<OrmWeather> getDayForecast(ForecastWeather forecastWeather) {
-        List<OrmWeather> weatherList = new ArrayList<>();
+        List<OrmWeather> weatherList = new LinkedList<>();
         OrmWeather ormWeather;
         try {
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
@@ -92,16 +92,12 @@ public class WeatherService extends IntentService {
                     if (df.parse(hour.getTime()).after(Calendar.getInstance().getTime()) && df.parse(hour.getTime()).before(nextDay.getTime())) {
                         ormWeather = new OrmWeather();
                         ormWeather.setCityId(/*forecastWeather.getLocation().getTzId()*/0L);
-                        ormWeather.setLocation("");
                         ormWeather.setDate(hour.getTime());
                         ormWeather.setIconCode(hour.getCondition().getCode());
                         ormWeather.setIsDay(hour.getIsDay() == DAY_PARAMETER);
-                        ormWeather.setDetails("");
                         ormWeather.setHumidity(hour.getHumidity());
                         ormWeather.setPressure(hour.getPressureMb());
                         ormWeather.setTemp((int) hour.getTempC());
-                        ormWeather.setTempMin(0);
-                        ormWeather.setTempMax(0);
                         ormWeather.setType(OrmWeather.WeatherType.HOUR);
 
                         weatherList.add(ormWeather);
@@ -115,18 +111,14 @@ public class WeatherService extends IntentService {
     }
 
     private List<OrmWeather> getWeekForecast(ForecastWeather forecastWeather) {
-        List<OrmWeather> weatherList = new ArrayList<>();
+        List<OrmWeather> weatherList = new LinkedList<>();
         OrmWeather ormWeather;
         for (ForecastDay day : forecastWeather.getForecast().getForecastDay()) {
             ormWeather = new OrmWeather();
             ormWeather.setCityId(/*forecastWeather.getLocation().getTzId()*/0L);
-            ormWeather.setLocation("");
             ormWeather.setDate(day.getDate());
             ormWeather.setIconCode(day.getDay().getCondition().getCode());
             ormWeather.setIsDay(forecastWeather.getCurrent().getIsDay() == DAY_PARAMETER);
-            ormWeather.setDetails("");
-            ormWeather.setHumidity(0);
-            ormWeather.setPressure(0);
             ormWeather.setTemp((int) day.getDay().getAvgTempC());
             ormWeather.setTempMin((int) day.getDay().getMinTempC());
             ormWeather.setTempMax((int) day.getDay().getMaxTempC());

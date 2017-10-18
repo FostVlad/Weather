@@ -14,7 +14,7 @@ public class Hour {
     @SerializedName("wind_kph")
     private double windKph;
     @SerializedName("pressure_mb")
-    private int pressureMb;
+    private double pressureMb;
     @SerializedName("humidity")
     private int humidity;
     @SerializedName("cloud")
@@ -52,7 +52,7 @@ public class Hour {
         return windKph;
     }
 
-    public int getPressureMb() {
+    public double getPressureMb() {
         return pressureMb;
     }
 

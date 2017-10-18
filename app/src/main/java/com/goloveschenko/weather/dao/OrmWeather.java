@@ -1,28 +1,30 @@
 package com.goloveschenko.weather.dao;
 
+import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.ToOne;
 import org.greenrobot.greendao.converter.PropertyConverter;
-import org.greenrobot.greendao.DaoException;
 
 @Entity
 public class OrmWeather {
     @Id(autoincrement = true)
     private Long id;
+    @NotNull
     private Long cityId;
     private String location;
     private String date;
-    private int iconCode;
+    private Integer iconCode;
     private String details;
-    private int humidity;
-    private double pressure;
-    private int temp;
-    private int tempMin;
-    private int tempMax;
-    private boolean isDay;
+    private Integer humidity;
+    private Double pressure;
+    private Integer temp;
+    private Integer tempMin;
+    private Integer tempMax;
+    private Boolean isDay;
     @Convert(converter = WeatherTypeConverter.class, columnType = Integer.class)
     private WeatherType type;
 
@@ -35,10 +37,10 @@ public class OrmWeather {
     @Generated(hash = 1896156639)
     private transient OrmWeatherDao myDao;
 
-    @Generated(hash = 218782970)
-    public OrmWeather(Long id, Long cityId, String location, String date, int iconCode, String details,
-            int humidity, double pressure, int temp, int tempMin, int tempMax, boolean isDay,
-            WeatherType type) {
+    @Generated(hash = 60668615)
+    public OrmWeather(Long id, @NotNull Long cityId, String location, String date, Integer iconCode,
+            String details, Integer humidity, Double pressure, Integer temp, Integer tempMin,
+            Integer tempMax, Boolean isDay, WeatherType type) {
         this.id = id;
         this.cityId = cityId;
         this.location = location;
@@ -90,11 +92,11 @@ public class OrmWeather {
         this.date = date;
     }
 
-    public int getIconCode() {
+    public Integer getIconCode() {
         return this.iconCode;
     }
 
-    public void setIconCode(int iconCode) {
+    public void setIconCode(Integer iconCode) {
         this.iconCode = iconCode;
     }
 
@@ -106,51 +108,51 @@ public class OrmWeather {
         this.details = details;
     }
 
-    public int getHumidity() {
+    public Integer getHumidity() {
         return this.humidity;
     }
 
-    public void setHumidity(int humidity) {
+    public void setHumidity(Integer humidity) {
         this.humidity = humidity;
     }
 
-    public double getPressure() {
+    public Double getPressure() {
         return this.pressure;
     }
 
-    public void setPressure(double pressure) {
+    public void setPressure(Double pressure) {
         this.pressure = pressure;
     }
 
-    public int getTemp() {
+    public Integer getTemp() {
         return this.temp;
     }
 
-    public void setTemp(int temp) {
+    public void setTemp(Integer temp) {
         this.temp = temp;
     }
 
-    public int getTempMin() {
+    public Integer getTempMin() {
         return this.tempMin;
     }
 
-    public void setTempMin(int tempMin) {
+    public void setTempMin(Integer tempMin) {
         this.tempMin = tempMin;
     }
 
-    public int getTempMax() {
+    public Integer getTempMax() {
         return this.tempMax;
     }
 
-    public void setTempMax(int tempMax) {
+    public void setTempMax(Integer tempMax) {
         this.tempMax = tempMax;
     }
 
-    public boolean getIsDay() {
+    public Boolean getIsDay() {
         return this.isDay;
     }
 
-    public void setIsDay(boolean isDay) {
+    public void setIsDay(Boolean isDay) {
         this.isDay = isDay;
     }
 
@@ -185,11 +187,15 @@ public class OrmWeather {
     }
 
     /** called by internal mechanisms, do not call yourself. */
-    @Generated(hash = 22237661)
-    public void setCity(OrmCity city) {
+    @Generated(hash = 680851122)
+    public void setCity(@NotNull OrmCity city) {
+        if (city == null) {
+            throw new DaoException(
+                    "To-one property 'cityId' has not-null constraint; cannot set to-one to null");
+        }
         synchronized (this) {
             this.city = city;
-            cityId = city == null ? null : city.getId();
+            cityId = city.getId();
             city__resolvedKey = cityId;
         }
     }
