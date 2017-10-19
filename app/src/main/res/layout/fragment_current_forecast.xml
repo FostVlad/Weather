@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorPrimaryDark">
@@ -18,8 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteY="30dp" />
+        app:layout_constraintVertical_bias="0.0"/>
 
     <TextView
         android:id="@+id/details"
@@ -44,8 +42,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/location"
-        android:textSize="90sp"
-        android:paddingTop="40dp"/>
+        android:textSize="@dimen/current_forecast_text_size"
+        android:paddingTop="@dimen/current_forecast_text_padding"/>
 
     <TextView
         android:id="@+id/time"
@@ -75,7 +73,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/temp"
-        android:layout_marginTop="5sp"
+        android:layout_marginTop="@dimen/current_forecast_divider_margin"
         app:layout_constraintTop_toBottomOf="@id/temp"
         android:background="@android:color/white" />
 

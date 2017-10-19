@@ -31,7 +31,7 @@
         android:layout_height="match_parent"
         android:layout_weight="0.25"
         android:text="@string/icon"
-        android:textSize="25sp"
+        android:textSize="@dimen/city_adapter_text_size"
         android:textAlignment="center"
         android:textColor="@android:color/white"/>
 
@@ -41,7 +41,7 @@
         android:layout_height="match_parent"
         android:layout_weight="0.2"
         android:text="@string/temp"
-        android:textSize="25sp"
+        android:textSize="@dimen/city_adapter_text_size"
         android:textAlignment="textEnd"
         android:textColor="@android:color/white"/>
 </LinearLayout>

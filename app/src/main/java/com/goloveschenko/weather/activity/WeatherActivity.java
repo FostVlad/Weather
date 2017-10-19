@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.goloveschenko.WeatherApp;
@@ -33,6 +35,10 @@ public class WeatherActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.weather_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
         setProgressBarVisible(true);
         container = (FrameLayout) findViewById(R.id.current_forecast_container);
@@ -50,9 +56,20 @@ public class WeatherActivity extends BaseActivity {
         Intent serviceIntent = new Intent(this, WeatherService.class);
         serviceIntent.putExtra(CITY_ID_EXTRA, 0L);
         startService(serviceIntent);
+    }
 
-        ImageView cityButton = (ImageView) findViewById(R.id.add_city_button);
-        cityButton.setOnClickListener(view -> startActivityForResult(new Intent(WeatherActivity.this, CityActivity.class), 200));
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_weather, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_add_city) {
+            startActivityForResult(new Intent(WeatherActivity.this, CityActivity.class), 200);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void updateWeatherView() {

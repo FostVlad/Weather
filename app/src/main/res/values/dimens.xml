@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Weather Activity-->
+    <dimen name="app_bar_height">320dp</dimen>
+    <dimen name="collapsing_bar_height">200dp</dimen>
+    <dimen name="toolbar_height">28dp</dimen>
+    <dimen name="container_padding">10dp</dimen>
+
+    <!--Day Adapter-->
+    <dimen name="day_adapter_text_size">30sp</dimen>
+    <dimen name="day_adapter_text_margin">10sp</dimen>
+
+    <!--City Adapter-->
+    <dimen name="city_adapter_text_size">25sp</dimen>
+
+    <!--Current Forecast Container-->
+    <dimen name="current_forecast_text_size">90sp</dimen>
+    <dimen name="current_forecast_text_padding">40dp</dimen>
+    <dimen name="current_forecast_divider_margin">5sp</dimen>
+</resources>
