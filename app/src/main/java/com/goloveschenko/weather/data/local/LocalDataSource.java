@@ -96,10 +96,20 @@ public class LocalDataSource implements ILocalDataSource {
         List<OrmCity> cityList = cityDao.loadAll();
         if (cityList.size() == 0) {
             OrmCity ormCity = new OrmCity(0L, "Minsk");
-            ormCity.__setDaoSession(daoSession);
+            daoSession.insert(ormCity);
             cityList.add(ormCity);
         }
         return cityList;
+    }
+
+    @Override
+    public OrmCity getCityById(Long id) {
+        OrmCityDao cityDao = daoSession.getOrmCityDao();
+        if (cityDao.count() == 0) {
+            OrmCity ormCity = new OrmCity(0L, "Minsk");
+            daoSession.insert(ormCity);
+        }
+        return cityDao.load(id);
     }
 
     @Override

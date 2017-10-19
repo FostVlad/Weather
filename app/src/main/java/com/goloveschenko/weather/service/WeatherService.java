@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.goloveschenko.WeatherApp;
 import com.goloveschenko.weather.activity.WeatherActivity;
+import com.goloveschenko.weather.dao.OrmCity;
 import com.goloveschenko.weather.dao.OrmWeather;
 import com.goloveschenko.weather.data.local.ILocalDataSource;
 import com.goloveschenko.weather.data.model.ForecastDay;
@@ -29,21 +30,25 @@ import io.reactivex.schedulers.Schedulers;
 public class WeatherService extends IntentService {
     private static final String SERVICE_NAME = "WeatherService";
 
-    private static final String CITY_NAME = "Minsk";
     private static final String DAYS_COUNT = "7";
     private static final int DAY_PARAMETER = 1;
 
+    private final DateFormat df;
     private ILocalDataSource localDataSource;
+    private Long cityId;
 
     public WeatherService() {
         super(SERVICE_NAME);
+        df = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
     }
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         if (intent != null) {
             localDataSource = ((WeatherApp) getApplication()).getLocalDataSource();
-            WeatherApiClient.getClient().getWeatherByDays(CITY_NAME, DAYS_COUNT)
+            cityId = intent.getLongExtra(WeatherActivity.CITY_ID_EXTRA, 0L);
+            OrmCity city = localDataSource.getCityById(cityId);
+            WeatherApiClient.getClient().getWeatherByDays(city.getLocation(), DAYS_COUNT)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
                     .subscribe(this::updateLocalWeather,
@@ -60,13 +65,13 @@ public class WeatherService extends IntentService {
         weatherList.add(0, ormWeather);
         weatherList.addAll(getWeekForecast(forecastWeather));
 
-        localDataSource.refreshForecast(0L, weatherList);
+        localDataSource.refreshForecast(cityId, weatherList);
     }
 
     private OrmWeather getCurrentWeather(ForecastWeather forecastWeather) {
         OrmWeather ormWeather = new OrmWeather();
-        ormWeather.setCityId(/*forecastWeather.getLocation().getTzId()*/0L);
-        ormWeather.setLocation(forecastWeather.getLocation().getName().toUpperCase(Locale.US) + ", " + forecastWeather.getLocation().getCountry().toUpperCase(Locale.US));
+        ormWeather.setCityId(cityId);
+        ormWeather.setLocation(forecastWeather.getLocation().getName().toUpperCase(Locale.getDefault()) + ", " + forecastWeather.getLocation().getCountry().toUpperCase(Locale.getDefault()));
         ormWeather.setDate(WeatherUtils.getConvertTime(forecastWeather.getLocation().getLocaltime()));
         ormWeather.setIconCode(forecastWeather.getCurrent().getCondition().getCode());
         ormWeather.setIsDay(forecastWeather.getCurrent().getIsDay() == DAY_PARAMETER);
@@ -84,14 +89,14 @@ public class WeatherService extends IntentService {
         List<OrmWeather> weatherList = new LinkedList<>();
         OrmWeather ormWeather;
         try {
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
+            //add only 24 hours to the database
             Calendar nextDay = Calendar.getInstance();
             nextDay.add(Calendar.DATE, 1);
             for (ForecastDay forecastDay : forecastWeather.getForecast().getForecastDay()) {
                 for (Hour hour : forecastDay.getHour()) {
                     if (df.parse(hour.getTime()).after(Calendar.getInstance().getTime()) && df.parse(hour.getTime()).before(nextDay.getTime())) {
                         ormWeather = new OrmWeather();
-                        ormWeather.setCityId(/*forecastWeather.getLocation().getTzId()*/0L);
+                        ormWeather.setCityId(cityId);
                         ormWeather.setDate(hour.getTime());
                         ormWeather.setIconCode(hour.getCondition().getCode());
                         ormWeather.setIsDay(hour.getIsDay() == DAY_PARAMETER);
@@ -115,7 +120,7 @@ public class WeatherService extends IntentService {
         OrmWeather ormWeather;
         for (ForecastDay day : forecastWeather.getForecast().getForecastDay()) {
             ormWeather = new OrmWeather();
-            ormWeather.setCityId(/*forecastWeather.getLocation().getTzId()*/0L);
+            ormWeather.setCityId(cityId);
             ormWeather.setDate(day.getDate());
             ormWeather.setIconCode(day.getDay().getCondition().getCode());
             ormWeather.setIsDay(forecastWeather.getCurrent().getIsDay() == DAY_PARAMETER);

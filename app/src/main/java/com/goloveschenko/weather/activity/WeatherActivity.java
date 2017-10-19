@@ -19,6 +19,7 @@ import com.goloveschenko.weather.service.WeatherService;
 
 public class WeatherActivity extends BaseActivity {
     public static final String BROADCAST_ACTION = "WeatherActivity_action";
+    public static final String CITY_ID_EXTRA = "cityId_extra";
 
     private FrameLayout container;
     private ProgressBar progressBar;
@@ -46,23 +47,23 @@ public class WeatherActivity extends BaseActivity {
         IntentFilter intentFilter = new IntentFilter(BROADCAST_ACTION);
         registerReceiver(receiver, intentFilter);
 
-        startService(new Intent(this, WeatherService.class));
+        Intent serviceIntent = new Intent(this, WeatherService.class);
+        serviceIntent.putExtra(CITY_ID_EXTRA, 0L);
+        startService(serviceIntent);
 
         ImageView cityButton = (ImageView) findViewById(R.id.add_city_button);
         cityButton.setOnClickListener(view -> startActivityForResult(new Intent(WeatherActivity.this, CityActivity.class), 200));
     }
 
-
-
     private void updateWeatherView() {
         ILocalDataSource localDataSource = ((WeatherApp) getApplication()).getLocalDataSource();
         //===CURRENT FORECAST===
-        CurrentForecastFragment currentForecastFragment = CurrentForecastFragment.getInstance(/*localDataSource.getCurrentForecast().getCityId()*/0L);
+        CurrentForecastFragment currentForecastFragment = CurrentForecastFragment.getInstance(localDataSource.getCityList().get(0).getId());
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.current_forecast_container, currentForecastFragment)
                 .commit();
         //===WEEK FORECAST===
-        WeekForecastFragment weekForecastFragment = WeekForecastFragment.getInstance(/*localDataSource.getCurrentForecast().getCityId()*/0L);
+        WeekForecastFragment weekForecastFragment = WeekForecastFragment.getInstance(localDataSource.getCityList().get(0).getId());
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.week_forecast_container, weekForecastFragment)
                 .commit();
