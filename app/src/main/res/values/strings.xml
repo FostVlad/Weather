@@ -17,5 +17,6 @@
     <string name="temp_title">°</string>
 
     <!--Toolbar-->
+    <string name="action_show_cities">Show cities</string>
     <string name="action_add_city">Add city</string>
 </resources>
