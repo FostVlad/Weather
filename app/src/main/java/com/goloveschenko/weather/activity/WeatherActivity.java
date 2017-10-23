@@ -67,7 +67,7 @@ public class WeatherActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_show_city_list) {
-            startActivityForResult(new Intent(WeatherActivity.this, CityActivity.class), 200);
+            startActivityForResult(new Intent(WeatherActivity.this, CitiesActivity.class), 200);
         }
         return super.onOptionsItemSelected(item);
     }

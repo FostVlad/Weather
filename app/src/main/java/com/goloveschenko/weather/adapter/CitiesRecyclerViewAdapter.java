@@ -17,7 +17,7 @@ import com.goloveschenko.weather.utils.WeatherUtils;
 
 import java.util.List;
 
-public class CityRecyclerViewAdapter extends RecyclerView.Adapter<CityRecyclerViewAdapter.ViewHolder> {
+public class CitiesRecyclerViewAdapter extends RecyclerView.Adapter<CitiesRecyclerViewAdapter.ViewHolder> {
     private final Typeface typeface;
     private Context context;
 
@@ -38,7 +38,7 @@ public class CityRecyclerViewAdapter extends RecyclerView.Adapter<CityRecyclerVi
         }
     }
 
-    public CityRecyclerViewAdapter(List<OrmCity> cityList, Context context) {
+    public CitiesRecyclerViewAdapter(List<OrmCity> cityList, Context context) {
         this.cityList = cityList;
         this.context = context;
         typeface = Typeface.createFromAsset(context.getAssets(), BuildConfig.WEATHER_FONT_PATH);

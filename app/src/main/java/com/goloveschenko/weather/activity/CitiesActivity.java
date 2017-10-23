@@ -10,14 +10,14 @@ import android.view.MenuItem;
 
 import com.goloveschenko.WeatherApp;
 import com.goloveschenko.weather.R;
-import com.goloveschenko.weather.adapter.CityRecyclerViewAdapter;
+import com.goloveschenko.weather.adapter.CitiesRecyclerViewAdapter;
 import com.goloveschenko.weather.dao.OrmCity;
 import com.goloveschenko.weather.data.local.ILocalDataSource;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CityActivity extends BaseActivity {
+public class CitiesActivity extends BaseActivity {
     private RecyclerView recyclerViewCities;
     private List<OrmCity> cityList;
 
@@ -38,7 +38,7 @@ public class CityActivity extends BaseActivity {
         recyclerViewCities.setLayoutManager(new LinearLayoutManager(this));
 
         cityList = new ArrayList<>();
-        CityRecyclerViewAdapter adapter = new CityRecyclerViewAdapter(cityList, this);
+        CitiesRecyclerViewAdapter adapter = new CitiesRecyclerViewAdapter(cityList, this);
         recyclerViewCities.setAdapter(adapter);
 
         makeView();
