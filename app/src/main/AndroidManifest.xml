@@ -24,6 +24,8 @@
         </activity>
         <activity android:name=".activity.CitiesActivity"
             android:parentActivityName=".activity.WeatherActivity"/>
+        <activity android:name=".activity.SearchCityActivity"
+            android:parentActivityName=".activity.CitiesActivity"/>
 
         <!--Services-->
         <service android:name=".service.WeatherService" />

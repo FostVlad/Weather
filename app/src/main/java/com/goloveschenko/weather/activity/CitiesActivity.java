@@ -1,5 +1,6 @@
 package com.goloveschenko.weather.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -53,7 +54,7 @@ public class CitiesActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_add_city) {
-
+            startActivityForResult(new Intent(CitiesActivity.this, SearchCityActivity.class), 200);
         }
         return super.onOptionsItemSelected(item);
     }
