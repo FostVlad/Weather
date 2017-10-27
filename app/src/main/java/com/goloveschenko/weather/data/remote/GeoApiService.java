@@ -12,6 +12,5 @@ public interface GeoApiService {
             @Query("name_startsWith") String name,
             @Query("maxRows") int maxRows,
             @Query("lang") String lang,
-            @Query("cities") String cities,
-            @Query("username") String userName);
+            @Query("cities") String cities);
 }

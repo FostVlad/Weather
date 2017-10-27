@@ -9,13 +9,13 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class WeatherApiClient {
-    private static final String QUERY_NAME_APPID = "key";
-    private static final String QUERY_VALUE_APPID = "a456c65a89b44bf8ac6101713161207";
+public class GeoApiClient {
+    private static final String QUERY_NAME_APPID = "username";
+    private static final String QUERY_VALUE_APPID = "test1";
 
-    private static WeatherApiService service = null;
+    private static GeoApiService service = null;
 
-    public static WeatherApiService getClient() {
+    public static GeoApiService getClient() {
         if (service == null) {
             OkHttpClient client = new OkHttpClient.Builder().addInterceptor(chain -> {
                 Request request = chain.request();
@@ -25,15 +25,14 @@ public class WeatherApiClient {
             }).build();
 
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(BuildConfig.BASE_WEATHER_URL)
+                    .baseUrl(BuildConfig.BASE_GEO_URL)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(client)
                     .build();
 
-            service = retrofit.create(WeatherApiService.class);
+            service = retrofit.create(GeoApiService.class);
         }
         return service;
     }
-
 }
