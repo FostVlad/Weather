@@ -59,7 +59,7 @@ public class CitiesRecyclerViewAdapter extends RecyclerView.Adapter<CitiesRecycl
         Spanned iconCode = WeatherUtils.getWeatherIcon(currentWeather.getIconCode(), currentWeather.getIsDay());
         holder.icon.setText(iconCode);
         holder.icon.setTypeface(typeface);
-        String temp = String.valueOf(currentWeather.getTemp());
+        String temp = String.valueOf(currentWeather.getTemp()) + context.getString(R.string.temp_title);
         holder.temp.setText(temp);
     }
 
